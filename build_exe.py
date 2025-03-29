@@ -1,6 +1,12 @@
 import PyInstaller.__main__
 import os
 import sys
+import io
+
+# 解决Windows环境下的编码问题
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
 # 确保脚本路径正确
 script_path = os.path.dirname(os.path.abspath(__file__))
@@ -10,7 +16,7 @@ icon_path = os.path.join(script_path, 'assets', 'app_icon.ico') # Corrected icon
 # 基本的PyInstaller参数 (保持不变或核心的)
 base_args = [
     gui_path,
-    '--name=番茄小说下载器',
+    '--name=FanqieNovelDownloader',  # 使用英文名称避免编码问题
     '--onefile',
     '--windowed',
     '--clean',
@@ -52,7 +58,10 @@ extra_args = sys.argv[1:]
 all_args = base_args + extra_args
 
 # 打印最终参数用于调试
-print(f"Running PyInstaller with args: {all_args}")
+try:
+    print(f"Running PyInstaller with args: {all_args}")
+except UnicodeEncodeError:
+    print("Running PyInstaller with the configured arguments...")
 
 # 运行PyInstaller
 PyInstaller.__main__.run(all_args)
@@ -62,6 +71,6 @@ try:
     print("Build completed! The executable file is in the dist folder.")
 except UnicodeEncodeError:
     try:
-        sys.stdout.buffer.write("打包完成！可执行文件位于 dist 文件夹中\n".encode('utf-8'))
+        sys.stdout.buffer.write("Build completed! The executable file is in the dist folder.\n".encode('utf-8'))
     except:
-        print("Build completed! The executable file is in the dist folder.")
+        print("Build completed!")

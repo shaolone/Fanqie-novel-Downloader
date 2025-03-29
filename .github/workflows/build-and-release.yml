@@ -64,7 +64,7 @@ jobs:
 
       - name: 压缩Windows可执行文件
         run: |
-          Compress-Archive -Path dist/番茄小说下载器.exe -DestinationPath Fanqie-Novel-Downloader-Windows.zip
+          Compress-Archive -Path dist/FanqieNovelDownloader.exe -DestinationPath Fanqie-Novel-Downloader-Windows.zip
 
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
@@ -122,12 +122,12 @@ jobs:
       - name: 压缩MacOS可执行文件
         run: |
           # 创建App Bundle结构 (如果PyInstaller没有自动创建)
-          mkdir -p dist/番茄小说下载器.app/Contents/Resources
+          mkdir -p dist/FanqieNovelDownloader.app/Contents/Resources
           # 将可执行文件移动到正确位置
-          mv dist/番茄小说下载器 dist/番茄小说下载器.app/Contents/MacOS/
+          mv dist/FanqieNovelDownloader dist/FanqieNovelDownloader.app/Contents/MacOS/
           # (如果需要Info.plist等，也应在此处处理或由PyInstaller处理)
           # 压缩 .app 目录
-          cd dist && zip -ry ../Fanqie-Novel-Downloader-MacOS.zip 番茄小说下载器.app
+          cd dist && zip -ry ../Fanqie-Novel-Downloader-MacOS.zip FanqieNovelDownloader.app
 
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
@@ -184,7 +184,7 @@ jobs:
 
       - name: 压缩Linux可执行文件
         run: |
-          cd dist && zip -r ../Fanqie-Novel-Downloader-Linux.zip 番茄小说下载器
+          cd dist && zip -r ../Fanqie-Novel-Downloader-Linux.zip FanqieNovelDownloader
 
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
