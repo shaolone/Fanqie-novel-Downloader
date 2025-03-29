@@ -40,6 +40,25 @@ class SplashScreen(ctk.CTkToplevel):
         
         # 启动关闭计时器
         self.start_close_timer()
+        # 绑定销毁事件以确保父窗口显示
+        self.bind("<Destroy>", self.on_splash_destroy)
+
+    def on_splash_destroy(self, event=None):
+        """启动画面销毁时，确保父窗口显示"""
+        # 确保事件源是自身，避免意外触发
+        if event is None or event.widget == self:
+            try:
+                # 检查父窗口是否存在且是 Toplevel 或 Tk 类型
+                if self.parent and isinstance(self.parent, (tk.Tk, tk.Toplevel, ctk.CTk)):
+                    print("启动画面销毁，尝试显示主窗口...")
+                    self.parent.deiconify()
+                    self.parent.lift() # 尝试将窗口置顶
+                    self.parent.focus_force() # 强制获取焦点
+                    print("主窗口 deiconify 调用完成。")
+                else:
+                    print("父窗口无效或不存在，无法显示。")
+            except Exception as e:
+                print(f"显示主窗口时出错: {e}")
 
     def create_widgets(self, logo_path):
         # 配置grid
@@ -90,7 +109,7 @@ class SplashScreen(ctk.CTkToplevel):
         """启动关闭计时器"""
         # 不使用线程，直接使用after设置定时器
         self.after(int(self.duration * 1000), self.destroy)
-        self.after(int(self.duration * 1000) + 100, self.parent.deiconify)
+        # self.after(int(self.duration * 1000) + 100, self.parent.deiconify) # 移除这行，由 on_splash_destroy 处理
 
     def close_splash_screen(self):
         """已废弃，使用start_close_timer替代"""
