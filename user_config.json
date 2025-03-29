@@ -1,0 +1,27 @@
+{
+    "request": {
+        "max_workers": 5,
+        "max_retries": 3,
+        "request_timeout": 15,
+        "user_agents": [
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+        ]
+    },
+    "reader": {
+        "default_font": "@Fixedsys",
+        "default_size": 16,
+        "default_fg": "#ffffff",
+        "default_bg": "#000000",
+        "default_width": 800,
+        "default_height": 600,
+        "padding": 10,
+        "dark_mode": true
+    },
+    "file": {
+        "status_file": "chapter.json",
+        "cookie_file": "cookie.json",
+        "default_save_path": "C:/Users/Administrator/Desktop"
+    }
+}

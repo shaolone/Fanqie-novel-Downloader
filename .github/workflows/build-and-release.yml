@@ -26,18 +26,18 @@ jobs:
     steps:
       - name: 检出代码
         uses: actions/checkout@v3
-        
+
       - name: 设置Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
           cache: 'pip'
-          
+
       - name: 安装依赖
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
+
       - name: 确保cookie.json存在
         run: |
           if (-not (Test-Path -Path "./cookie.json")) {
@@ -49,67 +49,29 @@ jobs:
           if (-not (Test-Path -Path "./library.json")) {
             '{}' | Out-File -FilePath "./library.json" -Encoding utf8
           }
-          
+
       - name: 创建assets目录
         run: |
           if (-not (Test-Path -Path "./assets")) {
             New-Item -Path "./assets" -ItemType Directory
           }
-          
-      - name: 准备构建脚本
-        run: |
-          # 确保构建脚本添加了customtkinter和新的模块
-          $buildScript = Get-Content build_exe.py
-          $modified = $false
-          
-          # 检查是否包含customtkinter
-          if (-not ($buildScript -match "--hidden-import=customtkinter")) {
-            $buildScript = $buildScript -replace "--hidden-import=tkinter.messagebox',", "--hidden-import=tkinter.messagebox',`n    '--hidden-import=customtkinter',"
-            $modified = $true
-          }
-          
-          # 确保包含新的UI相关模块
-          foreach ($module in @("reader", "library", "splash", "settings", "config")) {
-            if (-not ($buildScript -match "--hidden-import=$module")) {
-              $buildScript = $buildScript -replace "--hidden-import=ebooklib.epub',", "--hidden-import=ebooklib.epub',`n    '--hidden-import=$module',"
-              $modified = $true
-            }
-          }
-          
-          # 确保添加了assets目录
-          if (-not ($buildScript -match "--add-data=assets/")) {
-            $buildScript = $buildScript -replace "--add-data=cookie.json;.", "--add-data=cookie.json;.`n    '--add-data=assets/;assets/',"
-            $modified = $true
-          }
-          
-          # 确保添加了library.json
-          if (-not ($buildScript -match "--add-data=library.json")) {
-            $buildScript = $buildScript -replace "--add-data=cookie.json;.", "--add-data=cookie.json;.`n    '--add-data=library.json;.',"
-            $modified = $true
-          }
-          
-          # 如果有修改，保存文件
-          if ($modified) {
-            $buildScript | Set-Content build_exe.py
-            Write-Host "构建脚本已更新"
-          } else {
-            Write-Host "构建脚本无需更新"
-          }
-          
+
+      # 移除了 "准备构建脚本" 步骤
+
       - name: 构建Windows可执行文件
         run: |
-          python build_exe.py
-          
+          python build_exe.py --add-data="cookie.json;." --add-data="library.json;." --add-data="assets;assets"
+
       - name: 压缩Windows可执行文件
         run: |
           Compress-Archive -Path dist/番茄小说下载器.exe -DestinationPath Fanqie-Novel-Downloader-Windows.zip
-          
+
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
         with:
           name: windows-build
           path: Fanqie-Novel-Downloader-Windows.zip
-          
+
       - name: 上传至已存在的Release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
@@ -123,67 +85,56 @@ jobs:
     steps:
       - name: 检出代码
         uses: actions/checkout@v3
-        
+
       - name: 设置Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
           cache: 'pip'
-          
+
       - name: 安装依赖
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
+
       - name: 确保cookie.json存在
         run: |
           if [ ! -f "./cookie.json" ]; then
             echo '""' > "./cookie.json"
           fi
-          
+
       - name: 确保library.json存在
         run: |
           if [ ! -f "./library.json" ]; then
             echo '{}' > "./library.json"
           fi
-          
+
       - name: 创建assets目录
         run: |
           mkdir -p ./assets
-          
-      - name: 准备构建脚本
-        run: |
-          # 修改为macOS格式的路径分隔符
-          sed -i '' 's/--add-data=cookie.json;./--add-data=cookie.json:./' build_exe.py
-          sed -i '' 's/--add-data=library.json;./--add-data=library.json:./' build_exe.py 2>/dev/null || sed -i '' 's/--add-data=cookie.json:./--add-data=cookie.json:.\n    '\''--add-data=library.json:.'\'',/' build_exe.py
-          sed -i '' 's/--add-data=assets\/;assets\//--add-data=assets\/:assets\//' build_exe.py 2>/dev/null || sed -i '' 's/--add-data=library.json:./--add-data=library.json:.\n    '\''--add-data=assets\/:assets\/'\''/' build_exe.py
-          
-          # 添加customtkinter和其他模块
-          if ! grep -q -- "--hidden-import=customtkinter" build_exe.py; then
-            sed -i '' 's/--hidden-import=tkinter.messagebox'"'"',/--hidden-import=tkinter.messagebox'"'"',\n    '"'"'--hidden-import=customtkinter'"'"',/' build_exe.py
-          fi
-          
-          # 添加新模块依赖
-          for module in reader library splash settings config; do
-            if ! grep -q -- "--hidden-import=$module" build_exe.py; then
-              sed -i '' 's/--hidden-import=ebooklib.epub'"'"',/--hidden-import=ebooklib.epub'"'"',\n    '"'"'--hidden-import='"$module"'"'"',/' build_exe.py
-            fi
-          done
-          
+
+      # 移除了 "准备构建脚本" 步骤
+
       - name: 构建MacOS可执行文件
         run: |
-          python build_exe.py
-          
+          python build_exe.py --add-data="cookie.json:." --add-data="library.json:." --add-data="assets:assets"
+
       - name: 压缩MacOS可执行文件
         run: |
-          cd dist && zip -r ../Fanqie-Novel-Downloader-MacOS.zip 番茄小说下载器
-          
+          # 创建App Bundle结构 (如果PyInstaller没有自动创建)
+          mkdir -p dist/番茄小说下载器.app/Contents/Resources
+          # 将可执行文件移动到正确位置
+          mv dist/番茄小说下载器 dist/番茄小说下载器.app/Contents/MacOS/
+          # (如果需要Info.plist等，也应在此处处理或由PyInstaller处理)
+          # 压缩 .app 目录
+          cd dist && zip -ry ../Fanqie-Novel-Downloader-MacOS.zip 番茄小说下载器.app
+
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
         with:
           name: macos-build
           path: Fanqie-Novel-Downloader-MacOS.zip
-          
+
       - name: 上传至已存在的Release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
@@ -197,63 +148,50 @@ jobs:
     steps:
       - name: 检出代码
         uses: actions/checkout@v3
-        
+
       - name: 设置Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
           cache: 'pip'
-          
+
       - name: 安装依赖
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
+
       - name: 确保cookie.json存在
         run: |
           if [ ! -f "./cookie.json" ]; then
             echo '""' > "./cookie.json"
           fi
-          
+
       - name: 确保library.json存在
         run: |
           if [ ! -f "./library.json" ]; then
             echo '{}' > "./library.json"
           fi
-          
+
       - name: 创建assets目录
         run: |
           mkdir -p ./assets
-          
-      - name: 准备构建脚本
-        run: |
-          # 修改为Linux格式的路径分隔符
-          sed -i 's/--add-data=cookie.json;./--add-data=cookie.json:./' build_exe.py
-          grep -q -- "--add-data=library.json" build_exe.py || sed -i 's/--add-data=cookie.json:./--add-data=cookie.json:.\n    '\''--add-data=library.json:.'\''/' build_exe.py
-          grep -q -- "--add-data=assets/" build_exe.py || sed -i 's/--add-data=library.json:./--add-data=library.json:.\n    '\''--add-data=assets\/:assets\/'\''/' build_exe.py
-          
-          # 添加customtkinter和其他模块
-          grep -q -- "--hidden-import=customtkinter" build_exe.py || sed -i 's/--hidden-import=tkinter.messagebox'"'"',/--hidden-import=tkinter.messagebox'"'"',\n    '"'"'--hidden-import=customtkinter'"'"',/' build_exe.py
-          
-          # 添加新模块依赖
-          for module in reader library splash settings config; do
-            grep -q -- "--hidden-import=$module" build_exe.py || sed -i 's/--hidden-import=ebooklib.epub'"'"',/--hidden-import=ebooklib.epub'"'"',\n    '"'"'--hidden-import='"$module"'"'"',/' build_exe.py
-          done
-          
+
+      # 移除了 "准备构建脚本" 步骤
+
       - name: 构建Linux可执行文件
         run: |
-          python build_exe.py
-          
+          python build_exe.py --add-data="cookie.json:." --add-data="library.json:." --add-data="assets:assets"
+
       - name: 压缩Linux可执行文件
         run: |
           cd dist && zip -r ../Fanqie-Novel-Downloader-Linux.zip 番茄小说下载器
-          
+
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
         with:
           name: linux-build
           path: Fanqie-Novel-Downloader-Linux.zip
-          
+
       - name: 上传至已存在的Release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
@@ -271,7 +209,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 20 # 获取最近20次提交
-          
+
       - name: 获取最近提交历史
         id: git_log
         run: |
@@ -281,22 +219,22 @@ jobs:
           echo "COMMIT_LOG<<EOF" >> $GITHUB_ENV
           echo "$COMMIT_LOG" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-          
+
       - name: 下载Windows构建产物
         uses: actions/download-artifact@v4
         with:
           name: windows-build
-          
+
       - name: 下载MacOS构建产物
         uses: actions/download-artifact@v4
         with:
           name: macos-build
-          
+
       - name: 下载Linux构建产物
         uses: actions/download-artifact@v4
         with:
           name: linux-build
-          
+
       - name: 创建Release
         uses: softprops/action-gh-release@v1
         with:
@@ -305,17 +243,17 @@ jobs:
           name: 番茄小说下载器 ${{ github.event.inputs.version }}
           body: |
             # 番茄小说下载器 ${{ github.event.inputs.version }} 发布
-            
+
             ### 功能
             - 从番茄小说下载小说并导出为TXT格式
             - 支持多线程下载加速
             - 内置阅读器，支持章节导航和阅读进度保存
             - 支持本地书库管理
             - 支持自定义阅读器字体、颜色和主题
-            
+
             ### 近期更新内容
             ${{ env.COMMIT_LOG }}
-            
+
             ### 下载
             - Windows: Fanqie-Novel-Downloader-Windows.zip
             - macOS: Fanqie-Novel-Downloader-MacOS.zip
