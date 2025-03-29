@@ -1,19 +1,19 @@
 <div align="center">
-  
+
 # 🎯 Fanqie Novel Downloader
 
 *Elegant, Efficient, Professional Novel Downloading Solution*
 
-[![Build Status](https://github.com/your-username/fanqie-novel-downloader/workflows/CI/badge.svg)](https://github.com/your-username/fanqie-novel-downloader/actions)
-[![Release](https://img.shields.io/github/v/release/your-username/fanqie-novel-downloader?include_prereleases&style=flat-square)](https://github.com/your-username/fanqie-novel-downloader/releases)
-[![License](https://img.shields.io/github/license/your-username/fanqie-novel-downloader?style=flat-square)](LICENSE)
+[![Build Status](https://github.com/POf-L/Fanqie-novel-Downloader/workflows/构建与发布/badge.svg)](https://github.com/POf-L/Fanqie-novel-Downloader/actions)
+[![Release](https://img.shields.io/github/v/release/POf-L/Fanqie-novel-Downloader?include_prereleases&style=flat-square)](https://github.com/POf-L/Fanqie-novel-Downloader/releases)
+[![License](https://img.shields.io/github/license/POf-L/Fanqie-novel-Downloader?style=flat-square)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-[English](./README_EN.md) | 简体中文
+简体中文
 
 [快速开始](#快速开始) • [核心特性](#核心特性) • [技术架构](#技术架构) • [部署指南](#部署指南) • [贡献指南](#贡献指南)
 
-![Product Demo](assets/demo.gif)
+<!-- 产品演示图将在未来添加 -->
 
 </div>
 
@@ -55,7 +55,7 @@ graph TD
     A[用户界面层] --> B[业务逻辑层]
     B --> C[数据访问层]
     C --> D[存储层]
-    
+
     B --> E[下载引擎]
     B --> F[解析引擎]
     B --> G[格式转换]
@@ -65,7 +65,7 @@ graph TD
 
 ### 在线使用
 
-1. 访问 [GitHub Actions](https://github.com/your-username/fanqie-novel-downloader/actions)
+1. 访问 [GitHub Actions](https://github.com/POf-L/Fanqie-novel-Downloader/actions)
 2. 选择 "在线下载小说" 工作流
 3. 输入小说ID并启动
 
@@ -73,7 +73,7 @@ graph TD
 
 ```bash
 # 克隆仓库
-git clone https://github.com/your-username/fanqie-novel-downloader.git
+git clone https://github.com/POf-L/Fanqie-novel-Downloader.git
 
 # 安装依赖
 pip install -r requirements.txt
@@ -173,8 +173,8 @@ EXPORT_CONFIG = {
 
 **如果这个项目对您有帮助，请考虑给它一个星标 ⭐️**
 
-[问题反馈](https://github.com/your-username/fanqie-novel-downloader/issues) • 
-[功能建议](https://github.com/your-username/fanqie-novel-downloader/discussions) • 
-[更新日志](https://github.com/your-username/fanqie-novel-downloader/releases)
+[问题反馈](https://github.com/POf-L/Fanqie-novel-Downloader/issues) •
+[功能建议](https://github.com/POf-L/Fanqie-novel-Downloader/discussions) •
+[更新日志](https://github.com/POf-L/Fanqie-novel-Downloader/releases)
 
 </div>
