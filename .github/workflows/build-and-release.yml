@@ -43,17 +43,58 @@ jobs:
           if (-not (Test-Path -Path "./cookie.json")) {
             '""' | Out-File -FilePath "./cookie.json" -Encoding utf8
           }
+
+      - name: 确保library.json存在
+        run: |
+          if (-not (Test-Path -Path "./library.json")) {
+            '{}' | Out-File -FilePath "./library.json" -Encoding utf8
+          }
+          
+      - name: 创建assets目录
+        run: |
+          if (-not (Test-Path -Path "./assets")) {
+            New-Item -Path "./assets" -ItemType Directory
+          }
           
       - name: 准备构建脚本
         run: |
-          # 确保build_exe.py中包含ebooklib.epub
-          (Get-Content build_exe.py) | ForEach-Object {
-            if ($_ -match "--hidden-import=ebooklib',") {
-              $_ -replace "--hidden-import=ebooklib',", "--hidden-import=ebooklib',`n    '--hidden-import=ebooklib.epub',  # 明确导入epub子模块"
-            } else {
-              $_
+          # 确保构建脚本添加了customtkinter和新的模块
+          $buildScript = Get-Content build_exe.py
+          $modified = $false
+          
+          # 检查是否包含customtkinter
+          if (-not ($buildScript -match "--hidden-import=customtkinter")) {
+            $buildScript = $buildScript -replace "--hidden-import=tkinter.messagebox',", "--hidden-import=tkinter.messagebox',`n    '--hidden-import=customtkinter',"
+            $modified = $true
+          }
+          
+          # 确保包含新的UI相关模块
+          foreach ($module in @("reader", "library", "splash", "settings", "config")) {
+            if (-not ($buildScript -match "--hidden-import=$module")) {
+              $buildScript = $buildScript -replace "--hidden-import=ebooklib.epub',", "--hidden-import=ebooklib.epub',`n    '--hidden-import=$module',"
+              $modified = $true
             }
-          } | Set-Content build_exe.py
+          }
+          
+          # 确保添加了assets目录
+          if (-not ($buildScript -match "--add-data=assets/")) {
+            $buildScript = $buildScript -replace "--add-data=cookie.json;.", "--add-data=cookie.json;.`n    '--add-data=assets/;assets/',"
+            $modified = $true
+          }
+          
+          # 确保添加了library.json
+          if (-not ($buildScript -match "--add-data=library.json")) {
+            $buildScript = $buildScript -replace "--add-data=cookie.json;.", "--add-data=cookie.json;.`n    '--add-data=library.json;.',"
+            $modified = $true
+          }
+          
+          # 如果有修改，保存文件
+          if ($modified) {
+            $buildScript | Set-Content build_exe.py
+            Write-Host "构建脚本已更新"
+          } else {
+            Write-Host "构建脚本无需更新"
+          }
           
       - name: 构建Windows可执行文件
         run: |
@@ -100,15 +141,34 @@ jobs:
             echo '""' > "./cookie.json"
           fi
           
+      - name: 确保library.json存在
+        run: |
+          if [ ! -f "./library.json" ]; then
+            echo '{}' > "./library.json"
+          fi
+          
+      - name: 创建assets目录
+        run: |
+          mkdir -p ./assets
+          
       - name: 准备构建脚本
         run: |
-          # 修改为macOS格式的路径分隔符，不再需要2.py
+          # 修改为macOS格式的路径分隔符
           sed -i '' 's/--add-data=cookie.json;./--add-data=cookie.json:./' build_exe.py
+          sed -i '' 's/--add-data=library.json;./--add-data=library.json:./' build_exe.py 2>/dev/null || sed -i '' 's/--add-data=cookie.json:./--add-data=cookie.json:.\n    '\''--add-data=library.json:.'\'',/' build_exe.py
+          sed -i '' 's/--add-data=assets\/;assets\//--add-data=assets\/:assets\//' build_exe.py 2>/dev/null || sed -i '' 's/--add-data=library.json:./--add-data=library.json:.\n    '\''--add-data=assets\/:assets\/'\''/' build_exe.py
           
-          # 确保包含ebooklib.epub
-          if ! grep -q -- "--hidden-import=ebooklib.epub" build_exe.py; then
-            sed -i '' 's/--hidden-import=ebooklib'"'"',/--hidden-import=ebooklib'"'"',\n    '"'"'--hidden-import=ebooklib.epub'"'"',  # 明确导入epub子模块/' build_exe.py
+          # 添加customtkinter和其他模块
+          if ! grep -q -- "--hidden-import=customtkinter" build_exe.py; then
+            sed -i '' 's/--hidden-import=tkinter.messagebox'"'"',/--hidden-import=tkinter.messagebox'"'"',\n    '"'"'--hidden-import=customtkinter'"'"',/' build_exe.py
           fi
+          
+          # 添加新模块依赖
+          for module in reader library splash settings config; do
+            if ! grep -q -- "--hidden-import=$module" build_exe.py; then
+              sed -i '' 's/--hidden-import=ebooklib.epub'"'"',/--hidden-import=ebooklib.epub'"'"',\n    '"'"'--hidden-import='"$module"'"'"',/' build_exe.py
+            fi
+          done
           
       - name: 构建MacOS可执行文件
         run: |
@@ -155,15 +215,30 @@ jobs:
             echo '""' > "./cookie.json"
           fi
           
+      - name: 确保library.json存在
+        run: |
+          if [ ! -f "./library.json" ]; then
+            echo '{}' > "./library.json"
+          fi
+          
+      - name: 创建assets目录
+        run: |
+          mkdir -p ./assets
+          
       - name: 准备构建脚本
         run: |
-          # 修改为Linux格式的路径分隔符，不再需要2.py
+          # 修改为Linux格式的路径分隔符
           sed -i 's/--add-data=cookie.json;./--add-data=cookie.json:./' build_exe.py
+          grep -q -- "--add-data=library.json" build_exe.py || sed -i 's/--add-data=cookie.json:./--add-data=cookie.json:.\n    '\''--add-data=library.json:.'\''/' build_exe.py
+          grep -q -- "--add-data=assets/" build_exe.py || sed -i 's/--add-data=library.json:./--add-data=library.json:.\n    '\''--add-data=assets\/:assets\/'\''/' build_exe.py
           
-          # 确保包含ebooklib.epub
-          if ! grep -q -- "--hidden-import=ebooklib.epub" build_exe.py; then
-            sed -i 's/--hidden-import=ebooklib'"'"',/--hidden-import=ebooklib'"'"',\n    '"'"'--hidden-import=ebooklib.epub'"'"',  # 明确导入epub子模块/' build_exe.py
-          fi
+          # 添加customtkinter和其他模块
+          grep -q -- "--hidden-import=customtkinter" build_exe.py || sed -i 's/--hidden-import=tkinter.messagebox'"'"',/--hidden-import=tkinter.messagebox'"'"',\n    '"'"'--hidden-import=customtkinter'"'"',/' build_exe.py
+          
+          # 添加新模块依赖
+          for module in reader library splash settings config; do
+            grep -q -- "--hidden-import=$module" build_exe.py || sed -i 's/--hidden-import=ebooklib.epub'"'"',/--hidden-import=ebooklib.epub'"'"',\n    '"'"'--hidden-import='"$module"'"'"',/' build_exe.py
+          done
           
       - name: 构建Linux可执行文件
         run: |
@@ -192,6 +267,21 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
     steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 20 # 获取最近20次提交
+          
+      - name: 获取最近提交历史
+        id: git_log
+        run: |
+          # 获取最近10次提交并格式化
+          COMMIT_LOG=$(git log -n 10 --pretty=format:"- %s (%h)" --no-merges)
+          # 将提交日志保存到多行环境变量中
+          echo "COMMIT_LOG<<EOF" >> $GITHUB_ENV
+          echo "$COMMIT_LOG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          
       - name: 下载Windows构建产物
         uses: actions/download-artifact@v4
         with:
@@ -212,16 +302,21 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ github.event.inputs.version }}
-          name: Fanqie Novel Downloader ${{ github.event.inputs.version }}
+          name: 番茄小说下载器 ${{ github.event.inputs.version }}
           body: |
-            Fanqie Novel Downloader ${{ github.event.inputs.version }} Release
+            # 番茄小说下载器 ${{ github.event.inputs.version }} 发布
             
-            ### Features
-            - Download novels from Fanqie and export as TXT or EPUB format
-            - Support multi-threaded downloading for acceleration
-            - Automatically fix ebooklib.epub module import issues
+            ### 功能
+            - 从番茄小说下载小说并导出为TXT格式
+            - 支持多线程下载加速
+            - 内置阅读器，支持章节导航和阅读进度保存
+            - 支持本地书库管理
+            - 支持自定义阅读器字体、颜色和主题
             
-            ### Downloads
+            ### 近期更新内容
+            ${{ env.COMMIT_LOG }}
+            
+            ### 下载
             - Windows: Fanqie-Novel-Downloader-Windows.zip
             - macOS: Fanqie-Novel-Downloader-MacOS.zip
             - Linux: Fanqie-Novel-Downloader-Linux.zip
