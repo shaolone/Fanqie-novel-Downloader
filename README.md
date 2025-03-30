@@ -31,52 +31,52 @@
 
 ## 🚀 快速开始
 
-### 🌐 在线下载
+### 🌐 在线下载（零安装，零依赖）
 
 <details>
-<summary><b>零安装，零依赖，点击展开详细步骤</b></summary>
+<summary><b>点击展开详细步骤</b></summary>
 
-利用 GitHub Actions 即可在线下载小说，无需本地安装任何软件即可下载小说：
+利用GitHub Actions的强大功能，无需在本地安装任何软件即可下载小说：
 
-1.  访问 GitHub 仓库页面，点击 **"Actions"** 选项卡。
-2.  在左侧导航栏，选择 **"在线下载小说"** 工作流。
-3.  点击 **"Run workflow"** 按钮，根据提示填写：
-    -   **小说 ID**：从番茄小说网址获取 (例如 `https://fanqienovel.com/page/7105916563` 的 `7105916563`)。
-    -   **下载线程数**：默认为 5，可选 1-10。
-    -   **输出格式**：选择 `txt` 或 `epub`。
-4.  点击 **"Run workflow"** 开始下载。
-5.  下载完成后，在 Actions 运行记录的 **"Summary"** 标签页中，找到 **"Artifacts"**  部分，下载小说文件 (7天有效期)。
+1. 在GitHub仓库页面，点击 **"Actions"** 选项卡
+2. 左侧选择 **"在线下载小说"** 工作流
+3. 点击 **"Run workflow"** 按钮
+4. 填写以下信息：
+   - **小说ID**：从番茄小说网址中获取（例如：`https://fanqienovel.com/page/7105916563` 中的 `7105916563`）
+   - **下载线程数**：默认为5，可选1-10
+   - **输出格式**：选择txt或epub
+5. 点击 **"Run workflow"** 开始下载
+6. 下载完成后，点击运行记录中的 **"Summary"** 标签
+7. 在 **"Artifacts"** 部分找到并下载小说文件（保存期限为7天）
 
 </details>
 
-### 📦 客户端下载
+### 📦 一键式安装与使用
 
 <details>
-<summary><b>一键安装，点击查看各平台预编译版本</b></summary>
+<summary><b>点击查看各平台预编译版本</b></summary>
 
-无需 Python 环境，下载即用！
+从 [📥 官方发布页](https://github.com/POf-L/Fanqie-Tomato-Downloader/releases) 下载适合您系统的预编译版本：
 
-访问 [📥 官方发布页](https://github.com/POf-L/Fanqie-Tomato-Downloader/releases) 下载预编译版本：
-
-| 平台    | 下载链接                                                                                                | 说明                                        |
-| ------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| Windows | [`Fanqie-Novel-Downloader-Windows.zip`](https://github.com/POf-L/Fanqie-Tomato-Downloader/releases) | 解压后双击运行 `番茄小说下载器.exe`          |
-| MacOS   | [`Fanqie-Novel-Downloader-MacOS.zip`](https://github.com/POf-L/Fanqie-Tomato-Downloader/releases)   | 解压后运行 `番茄小说下载器` 应用              |
-| Linux   | [`Fanqie-Novel-Downloader-Linux.zip`](https://github.com/POf-L/Fanqie-Tomato-Downloader/releases)   | 解压后运行 `番茄小说下载器` 可执行文件        |
+| 平台 | 下载链接 | 说明 |
+|------|---------|------|
+| Windows | [`Fanqie-Novel-Downloader-Windows.zip`](https://github.com/POf-L/Fanqie-Tomato-Downloader/releases) | 解压后双击运行 `番茄小说下载器.exe` |
+| MacOS | [`Fanqie-Novel-Downloader-MacOS.zip`](https://github.com/POf-L/Fanqie-Tomato-Downloader/releases) | 解压后运行 `番茄小说下载器` 应用 |
+| Linux | [`Fanqie-Novel-Downloader-Linux.zip`](https://github.com/POf-L/Fanqie-Tomato-Downloader/releases) | 解压后运行 `番茄小说下载器` 可执行文件 |
 
 </details>
 
-### 💻 开发者选项
+### 💻 从源码运行（开发者选项）
 
 <details>
-<summary><b>从源码运行，点击展开开发者指南</b></summary>
+<summary><b>点击展开开发者指南</b></summary>
 
 ```bash
 # 1. 克隆代码仓库
 git clone https://github.com/POf-L/Fanqie-Tomato-Downloader.git
 cd Fanqie-Tomato-Downloader
 
-# 2. 安装依赖
+# 2. 安装依赖库
 pip install -r requirements.txt
 
 # 3. 启动应用
@@ -87,24 +87,69 @@ python gui.py
 
 ## 💻 使用指南
 
-### 🔍 如何查找小说 ID？
+### 🔍 如何查找小说ID
 
-在番茄小说网站，打开想要下载的小说页面，浏览器地址栏 URL 中的数字部分就是小说 ID。
+在番茄小说网站上，打开您想要下载的小说页面，URL中的数字部分就是小说ID。
 
->  **示例：** `https://fanqienovel.com/page/7105916563`  的 ID 为 `7105916563`。
+> 例如：`https://fanqienovel.com/page/7105916563` 中的 `7105916563` 就是小说ID。
 
-### 📂 文件保存位置？
+### 📂 下载文件位置
 
-- **GUI 客户端**：文件保存在您在设置中指定的路径。
-- **在线下载**：文件将作为GitHub Artifacts提供下载 (7 天有效期)。
+- **GUI应用**：下载的文件保存在您指定的保存路径中
+- **在线下载**：文件将作为GitHub Artifacts提供下载，保存期限为7天
 
 ## 🛠️ 技术架构
 
-本项目基于 Python 和 `customtkinter` 构建，采用分层架构：
+本项目主要使用 Python 和 `customtkinter` 构建。核心模块交互如下：
 
 ```mermaid
 graph LR
-    A[Square Rect] -- Link text --> B(Round Rect)
+    subgraph UI_Layer 用户界面层
+        GUI_Module[主界面模块 (gui.py)\nNovelDownloaderGUI]
+        LibraryWindowModule[书库窗口模块 (library.py)\nLibraryWindow]
+        ReaderWindowModule[阅读器模块 (reader.py)\nReader]
+        SettingsDialogModule[设置对话框模块 (settings.py)\nSettingsDialog]
+        SplashScreenModule[启动画面模块 (splash.py)\nSplashScreen]
+    end
+
+    subgraph Application_Logic 应用逻辑层
+        DownloaderLogic[下载逻辑模块 (gui.py)\ndownload_novel,\nstart_download]
+        LibraryManager[书库管理模块\n(library.py)\nload/save/add/remove,\nLibrary Logic]
+        ConfigManager[配置管理模块\n(config.py)\nload/save UserConfig]
+    end
+
+    subgraph Data_Interaction 数据交互层
+        RequestHandlerModule[请求处理模块 (request_handler.py)\nRequestHandler,\nget_book_info,\ndown_text,\nextract_chapters]
+    end
+
+    subgraph Storage_Layer 数据存储层
+        UserConfig_JSON[user_config.json\n用户配置]
+        LibData_JSON[library.json\n书库数据]
+        CookieData_JSON[cookie.json\nCookie]
+        NovelFiles[小说文件\n(*.txt, *.epub)]
+    end
+
+    GUI_Module --> DownloaderLogic
+    GUI_Module --> LibraryWindowModule
+    GUI_Module --> SettingsDialogModule
+    GUI_Module -- 调用 --> LibraryManager
+    GUI_Module -- 调用 --> ConfigManager
+    LibraryWindowModule --> LibraryManager
+    LibraryWindowModule --> ReaderWindowModule
+    ReaderWindowModule --> ConfigManager
+    SettingsDialogModule --> ConfigManager
+
+    DownloaderLogic -- 使用 --> RequestHandlerModule
+    LibraryManager -- 使用 --> RequestHandlerModule
+    LibraryManager -- 操作 --> LibData_JSON
+    ConfigManager -- 操作 --> UserConfig_JSON
+    RequestHandlerModule -- 获取/更新 --> CookieData_JSON
+    DownloaderLogic -- 生成 --> NovelFiles
+
+    style UserConfig_JSON fill:#f9f,stroke:#333,stroke-width:2px
+    style LibData_JSON fill:#f9f,stroke:#333,stroke-width:2px
+    style CookieData_JSON fill:#f9f,stroke:#333,stroke-width:2px
+    style NovelFiles fill:#ccf,stroke:#333,stroke-width:2px
 ```
 
 *   **UI 层**：`customtkinter` 构建图形界面。
@@ -114,11 +159,11 @@ graph LR
 
 ## 🔄 自动化构建
 
-GitHub Actions 实现 CI/CD，`build-and-release.yml` 定义构建流程。
+本项目采用 GitHub Actions 进行自动化构建和发布流程，`build-and-release.yml` 描述了详细的构建步骤。
 
 ### ⚙️ 自动构建流程
 
-1.  **多平台兼容**：支持 Windows, macOS, Linux。
+1.  **多平台构建**：支持 Windows, macOS, Linux。
 2.  **环境配置**：自动配置 Python 环境和依赖。
 3.  **代码编译**：PyInstaller 打包 Python 代码。
 4.  **性能优化**：优化体积和性能。
@@ -126,37 +171,39 @@ GitHub Actions 实现 CI/CD，`build-and-release.yml` 定义构建流程。
 
 ### 🚀 手动构建与发布
 
-1.  **Actions 页面**：在 GitHub 仓库 Actions 页面选择 "build-and-release" 工作流。
+1.  **GitHub Actions 页面**：在仓库 Actions 页面选择 "build-and-release" 工作流。
 2.  **运行工作流**：点击 "Run workflow"，填写版本信息。
 3.  **等待完成**：等待 GitHub Actions 完成构建和发布。
 
 ## ❓ 常见问题
 
 <details>
-<summary><b>下载失败或速度慢？</b></summary>
+<summary><b>遇到下载问题？</b></summary>
 
-* 检查网络连接。
-* 调整设置中线程数。
-* 尝试分批下载或稍后重试。
+-   **检查网络**：确保网络连接正常。
+-   **线程调整**：尝试在设置中调整下载线程数。
+-   **Cookie**：检查或清除 `cookie.json` 文件，重新获取 Cookie。
+-   **API 限制**：部分小说可能存在下载限制，请更换其他源或稍后重试。
 
 </details>
 
 <details>
 <summary><b>程序启动异常？</b></summary>
 
-* 确保您下载了正确的操作系统版本。
-* 检查系统是否满足最低要求。
-* 尝试重新下载最新发布版。
+-   **版本兼容**：确认下载版本与操作系统匹配。
+-   **依赖安装**：源码运行请检查 `requirements.txt` 依赖是否安装完整。
+-   **系统环境**：确保系统满足运行最低配置要求。
+-   **文件完整性**：尝试重新下载发布版本，避免文件损坏。
 
 </details>
 
 ## 📜 许可证
 
-MIT License - 详见 [LICENSE](LICENSE) 文件。
+本项目基于 [MIT License](LICENSE) 开源，您可以自由使用和修改。
 
 ---
 
-<p align="center">
+<div align="center">
 
 **⭐ 感谢您的使用，欢迎 Star 项目以支持维护和更新！⭐** 
 
