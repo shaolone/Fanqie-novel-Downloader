@@ -176,46 +176,46 @@ python gui.py
 ```mermaid
 graph LR
     subgraph UI_Layer 用户界面层
-        GUI[主界面 (gui.py)]
-        LibWin[书库窗口 (library.py)]
-        ReaderWin[阅读器 (reader.py)]
-        SettingsWin[设置窗口 (settings.py)]
-        Splash[启动画面 (splash.py)]
+        GUI_Module[主界面模块 (gui.py)]
+        LibraryWindowModule[书库窗口模块 (library.py)]
+        ReaderWindowModule[阅读器模块 (reader.py)]
+        SettingsDialogModule[设置对话框模块 (settings.py)]
+        SplashScreenModule[启动画面模块 (splash.py)]
     end
 
     subgraph Application_Logic 应用逻辑层
-        DownloaderModule[下载模块 (gui.py)]
-        LibraryManagerModule[书库管理模块 (library.py)]
-        ConfigManagerModule[配置管理模块 (config.py)]
+        DownloaderLogic[下载逻辑模块 (gui.py)]
+        LibraryManager[书库管理模块 (library.py)]
+        ConfigManager[配置管理模块 (config.py)]
     end
 
     subgraph Data_Interaction 数据交互层
-        RequestHandler[网络请求 (request_handler.py)]
+        RequestHandlerModule[请求处理模块 (request_handler.py)]
     end
 
     subgraph Storage_Layer 数据存储层
         UserConfig[用户配置 (user_config.json)]
         LibData[书库数据 (library.json)]
-        CookieData[Cookie (cookie.json)]
+        CookieData[Cookie数据 (cookie.json)]
         NovelFiles[小说文件 (*.txt)]
     end
 
-    GUI --> DownloaderModule
-    GUI --> LibWin
-    GUI --> SettingsWin
-    GUI -- 调用 --> LibraryManagerModule
-    GUI -- 调用 --> ConfigManagerModule
-    LibWin --> LibraryManagerModule
-    LibWin --> ReaderWin
-    ReaderWin -- 调用 --> ConfigManagerModule
-    SettingsWin -- 调用 --> ConfigManagerModule
+    GUI_Module --> DownloaderLogic
+    GUI_Module --> LibraryWindowModule
+    GUI_Module --> SettingsDialogModule
+    GUI_Module -- 调用 --> LibraryManager
+    GUI_Module -- 调用 --> ConfigManager
+    LibraryWindowModule --> LibraryManager
+    LibraryWindowModule --> ReaderWindowModule
+    ReaderWindowModule -- 调用 --> ConfigManager
+    SettingsDialogModule -- 调用 --> ConfigManager
 
-    DownloaderModule -- 使用 --> RequestHandler
-    LibraryManagerModule -- 使用 --> RequestHandler
-    LibraryManagerModule -- 操作 --> LibData
-    ConfigManagerModule -- 操作 --> UserConfig
-    RequestHandler -- 获取/更新 --> CookieData
-    DownloaderModule -- 生成 --> NovelFiles
+    DownloaderLogic -- 使用 --> RequestHandlerModule
+    LibraryManager -- 使用 --> RequestHandlerModule
+    LibraryManager -- 操作 --> LibData
+    ConfigManager -- 操作 --> UserConfig
+    RequestHandlerModule -- 获取/更新 --> CookieData
+    DownloaderLogic -- 生成 --> NovelFiles
 
     style UserConfig fill:#f9f,stroke:#333,stroke-width:2px
     style LibData fill:#f9f,stroke:#333,stroke-width:2px
