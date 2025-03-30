@@ -112,17 +112,17 @@ graph LR
         SplashScreenModule[启动画面模块 (splash.py)\nSplashScreen]
     end
 
-    subgraph Application_Logic 应用逻辑层
+    subgraph Application_Logic[应用逻辑层]
         DownloaderLogic[下载逻辑模块 (gui.py)\ndownload_novel,\nstart_download]
         LibraryManager[书库管理模块\n(library.py)\nload/save/add/remove,\nLibrary Logic]
         ConfigManager[配置管理模块\n(config.py)\nload/save UserConfig]
     end
 
-    subgraph Data_Interaction 数据交互层
+    subgraph Data_Interaction[数据交互层]
         RequestHandlerModule[请求处理模块 (request_handler.py)\nRequestHandler,\nget_book_info,\ndown_text,\nextract_chapters]
     end
 
-    subgraph Storage_Layer 数据存储层
+    subgraph Storage_Layer[数据存储层]
         UserConfig_JSON[user_config.json\n用户配置]
         LibData_JSON[library.json\n书库数据]
         CookieData_JSON[cookie.json\nCookie]
