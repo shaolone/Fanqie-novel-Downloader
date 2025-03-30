@@ -13,12 +13,12 @@
 
 **🌟 高效、优雅且功能强大的番茄小说下载解决方案 🌟**
 
-[✨ 特性](#-特性) •
-[🚀 快速开始](#-快速开始) •
-[💻 使用指南](#-使用指南) •
+[✨ 特性](#-特性) • 
+[🚀 快速开始](#-快速开始) • 
+[💻 使用指南](#-使用指南) • 
 [🛠️ 技术架构](#-技术架构) •
-[🔄 自动化构建](#-自动化构建) •
-[❓ 常见问题](#-常见问题) •
+[🔄 自动化构建](#-自动化构建) • 
+[❓ 常见问题](#-常见问题) • 
 [📜 许可证](#-许可证)
 
 </div>
@@ -27,22 +27,20 @@
 
 <table>
   <tr>
-    <td width="50%">
+    <td>
       <h3>📚 高质量内容获取</h3>
       <ul>
-        <li>支持番茄小说内容下载</li>
+        <li>支持番茄小说全平台内容下载</li>
         <li>智能解析章节结构与内容</li>
-        <li>通过 <code>request_handler.py</code> 与番茄小说服务器交互</li>
-        <li>自动处理 Cookie 获取与管理 (<code>cookie.json</code>)</li>
+        <li>自动校正小说格式与标点</li>
       </ul>
     </td>
-    <td width="50%">
-      <h3>📖 集成书库与阅读器</h3>
+    <td>
+      <h3>🔄 多格式转换</h3>
       <ul>
-        <li>本地书库管理 (<code>library.py</code>, <code>library.json</code>)，支持添加、删除、搜索</li>
-        <li>内置小说阅读器 (<code>reader.py</code>)</li>
-        <li>阅读器支持章节跳转、字体/颜色/主题自定义</li>
-        <li>自动保存和加载阅读进度</li>
+        <li>支持输出纯净TXT格式</li>
+        <li>生成精美排版的EPUB电子书</li>
+        <li>保留原书籍章节结构</li>
       </ul>
     </td>
   </tr>
@@ -50,19 +48,17 @@
     <td>
       <h3>⚡ 高效下载引擎</h3>
       <ul>
-        <li>多线程并发下载（可配置线程数）</li>
-        <li>清晰的下载进度显示</li>
-        <li>下载任务在主界面 (<code>gui.py</code>) 中管理</li>
+        <li>多线程并发下载技术</li>
+        <li>智能调节网络请求频率</li>
+        <li>断点续传与状态恢复</li>
       </ul>
     </td>
     <td>
-      <h3>🖥️ 现代化界面</h3>
+      <h3>🖥️ 界面体验</h3>
       <ul>
-        <li>基于 <code>customtkinter</code> 构建的现代风格图形界面</li>
-        <li>直观友好的用户交互 (<code>gui.py</code>)</li>
-        <li>提供启动画面 (<code>splash.py</code>)</li>
-        <li>丰富的自定义设置选项 (<code>settings.py</code>, <code>config.py</code>, <code>user_config.json</code>)</li>
-        <li>跨平台一致性体验 (Windows, MacOS, Linux)</li>
+        <li>直观友好的图形界面</li>
+        <li>实时下载进度可视化</li>
+        <li>跨平台一致性体验</li>
       </ul>
     </td>
   </tr>
@@ -78,12 +74,12 @@
 利用GitHub Actions的强大功能，无需在本地安装任何软件即可下载小说：
 
 1. 在GitHub仓库页面，点击 **"Actions"** 选项卡
-2. 左侧选择 **"在线下载小说"** 工作流 (`.github/workflows/download-novel.yml`)
+2. 左侧选择 **"在线下载小说"** 工作流
 3. 点击 **"Run workflow"** 按钮
 4. 填写以下信息：
    - **小说ID**：从番茄小说网址中获取（例如：`https://fanqienovel.com/page/7105916563` 中的 `7105916563`）
    - **下载线程数**：默认为5，可选1-10
-   - **输出格式**：目前仅支持 txt
+   - **输出格式**：选择txt或epub
 5. 点击 **"Run workflow"** 开始下载
 6. 下载完成后，点击运行记录中的 **"Summary"** 标签
 7. 在 **"Artifacts"** 部分找到并下载小说文件（保存期限为7天）
@@ -110,15 +106,6 @@
 <details>
 <summary><b>点击展开开发者指南</b></summary>
 
-**依赖:**
-*   Python 3.x
-*   主要库 (详见 `requirements.txt`):
-    *   `customtkinter`: 用于构建图形用户界面
-    *   `requests`: 用于发送网络请求
-    *   `Pillow`: 用于图像处理 (如图标)
-    *   `beautifulsoup4`: 用于解析HTML内容 (如果需要)
-    *   `pyinstaller`: (可选) 用于打包成可执行文件
-
 ```bash
 # 1. 克隆代码仓库
 git clone https://github.com/POf-L/Fanqie-Tomato-Downloader.git
@@ -135,29 +122,6 @@ python gui.py
 
 ## 💻 使用指南
 
-### 界面概览
-
-*   **主窗口 (`gui.py`)**:
-    *   **小说ID输入框**: 输入从番茄小说网站获取的小说ID。
-    *   **保存路径**: 选择下载的小说文件保存的位置。
-    *   **开始下载**: 启动下载任务。
-    *   **打开书库**: 打开本地已下载小说的书库窗口。
-    *   **设置**: 打开应用程序设置窗口。
-    *   **日志区域**: 显示下载过程中的信息和状态。
-    *   **进度条**: 可视化显示当前下载进度。
-*   **书库窗口 (`library.py`)**:
-    *   显示已添加到书库的小说列表。
-    *   提供搜索功能。
-    *   按钮：打开小说所在文件夹、阅读小说、从书库移除。
-*   **阅读器窗口 (`reader.py`)**:
-    *   显示小说内容。
-    *   顶部工具栏：章节选择、字体/颜色/背景设置、主题切换。
-    *   底部状态栏：显示阅读进度。
-*   **设置窗口 (`settings.py`)**:
-    *   **下载设置**: 配置默认保存路径、下载线程数等。
-    *   **阅读器设置**: 配置阅读器默认字体、颜色等。
-    *   **外观设置**: 配置应用程序的主题和颜色。
-
 ### 🔍 如何查找小说ID
 
 在番茄小说网站上，打开您想要下载的小说页面，URL中的数字部分就是小说ID。
@@ -166,8 +130,8 @@ python gui.py
 
 ### 📂 下载文件位置
 
-- **GUI应用**: 下载的文件保存在您通过设置窗口或主界面指定的“保存路径”中。下载完成后会自动添加到书库。
-- **在线下载**: 文件将作为GitHub Artifacts提供下载，保存期限为7天。
+- **GUI应用**：下载的文件保存在您指定的保存路径中
+- **在线下载**：文件将作为GitHub Artifacts提供下载，保存期限为7天
 
 ## 🛠️ 技术架构
 
@@ -208,7 +172,7 @@ graph LR
     LibraryWindowModule --> LibraryManager
     LibraryWindowModule --> ReaderWindowModule
     ReaderWindowModule -- 调用 --> ConfigManager
-    SettingsDialogModule -- 调用 --> ConfigManager
+    SettingsDialogModule --> 调用 --> ConfigManager
 
     DownloaderLogic -- 使用 --> RequestHandlerModule
     LibraryManager -- 使用 --> RequestHandlerModule
@@ -223,73 +187,62 @@ graph LR
     style NovelFiles fill:#ccf,stroke:#333,stroke-width:2px
 ```
 
-*   **UI层**: 使用 `customtkinter` 构建，包含主界面、书库、阅读器、设置和启动画面。
-*   **业务逻辑层**: 处理核心功能，如配置加载/保存、书库操作、下载流程控制。
-*   **数据交互层**: `request_handler.py` 负责与番茄小说服务器通信，获取书籍信息和章节内容。
-*   **数据存储**: 使用 JSON 文件存储用户配置、书库信息和 Cookie，下载的小说保存为 TXT 文件。
+*   **UI层**：使用 `customtkinter` 构建，包含主界面、书库、阅读器、设置和启动画面。
+*   **应用逻辑层**：处理核心功能，包括下载流程控制、书库管理、配置加载与保存等。
+*   **数据交互层**：`request_handler.py` 负责与外部数据源（番茄小说服务器、API）进行通信。
+*   **数据存储层**：使用 JSON 文件和 TXT 文件分别存储配置、书库信息、Cookie 及小说内容。
 
 ## 🔄 自动化构建
 
-本项目采用现代化的CI/CD流程，通过GitHub Actions (`.github/workflows/build-and-release.yml`) 自动构建并发布多平台应用。
+本项目采用 GitHub Actions 进行自动化构建和发布流程，`build-and-release.yml` 描述了详细的构建步骤。
 
 ### ⚙️ 自动构建流程
 
-当创建新的Release或手动触发工作流时，GitHub Actions会自动：
-
-1. 在Windows、MacOS和Linux三大平台进行并行构建 (使用 `pyinstaller`)
-2. 优化可执行文件大小和性能
-3. 将构建产物打包为便于分发的压缩文件
-4. 上传构建文件并创建正式发布页面
+1.  **多平台构建**：支持 Windows、macOS 和 Linux 三大平台并行构建。
+2.  **环境配置**：设置 Python 环境，安装依赖，为不同平台配置构建环境。
+3.  **代码打包**：使用 PyInstaller 将 Python 代码打包为独立可执行文件。
+4.  **资源优化**：优化构建产物体积和运行性能。
+5.  **版本发布**：自动上传构建好的文件到 GitHub Release 页面。
 
 ### 🚀 手动触发构建与发布
 
-1. 在GitHub仓库页面，点击 **"Actions"** 选项卡
-2. 左侧选择 **"构建与发布"** 工作流
-3. 点击 **"Run workflow"** 按钮并填写版本信息
-4. 等待自动化流程完成全部构建与发布
+1.  **GitHub Actions 页面**：在仓库 Actions 页面找到 "build-and-release" 工作流。
+2.  **手动运行**：点击 "Run workflow" 手动触发构建流程。
+3.  **填写版本信息**：根据提示填写 Release 版本号等信息。
+4.  **等待完成**：等待 GitHub Actions 自动完成构建和发布。
 
 ## ❓ 常见问题
 
 <details>
-<summary><b>遇到下载失败或速度慢的问题</b></summary>
+<summary><b>遇到下载问题？</b></summary>
 
-- 尝试在设置中减少并行下载线程数。
-- 检查网络连接是否稳定。
-- 检查 `cookie.json` 是否有效或尝试清空 Cookie 文件后重试。
-- 部分小说可能由于版权或其他原因无法下载。
-
-</details>
-
-<details>
-<summary><b>应用无法启动或崩溃</b></summary>
-
-- 确保您下载了正确的操作系统版本。
-- 如果从源码运行，请确保所有依赖 (`requirements.txt`) 都已正确安装。
-- 检查系统是否满足最低要求。
-- 尝试删除 `user_config.json` 和 `library.json` (会丢失配置和书库记录) 后重新启动。
-- 尝试重新下载最新版本。
+-   **检查网络**：确保网络连接正常。
+-   **线程调整**：尝试在设置中调整下载线程数。
+-   **Cookie**：检查或清除 `cookie.json` 文件，重新获取 Cookie。
+-   **API 限制**：部分小说可能存在下载限制，请更换其他源或稍后重试。
 
 </details>
 
 <details>
-<summary><b>EPUB 格式支持?</b></summary>
+<summary><b>程序启动异常？</b></summary>
 
-- 当前版本主要支持下载为 TXT 格式。EPUB 格式转换是未来可能添加的功能。
+-   **版本兼容**：确认下载版本与操作系统匹配。
+-   **依赖安装**：源码运行请检查 `requirements.txt` 依赖是否安装完整。
+-   **系统环境**：确保系统满足运行最低配置要求。
+-   **文件完整性**：尝试重新下载发布版本，避免文件损坏。
 
 </details>
 
 ## 📜 许可证
 
-本项目采用 [MIT 许可证](LICENSE) 进行授权和分发。
+本项目基于 [MIT License](LICENSE) 开源，您可以自由使用和修改。
 
 ---
 
 <div align="center">
 
-**⭐ 如果这个项目对您有帮助，请考虑给它一个星标！⭐**
+**⭐ 感谢您的使用，欢迎 Star 项目以支持维护和更新！⭐**
 
-[反馈问题](https://github.com/POf-L/Fanqie-Tomato-Downloader/issues) •
-[贡献代码](https://github.com/POf-L/Fanqie-Tomato-Downloader/pulls) •
-[查看更新](https://github.com/POf-L/Fanqie-Tomato-Downloader/releases)
+[GitHub 仓库](https://github.com/POf-L/Fanqie-Tomato-Downloader) | [问题反馈](https://github.com/POf-L/Fanqie-Tomato-Downloader/issues)
 
 </div>
