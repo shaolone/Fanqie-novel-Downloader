@@ -126,26 +126,33 @@ graph LR
     MainGUI -- Opens --> LibWindow
     MainGUI -- Opens --> SettingsDlg
     MainGUI -- Triggers Download --> RequestHandler
-    MainGUI -- Uses --> LibLogic %% e.g., on init
-    MainGUI -- Uses --> ConfigLogic %% Load/Save window state
+    MainGUI -- Uses --> LibLogic
+    %% e.g., on init
+    MainGUI -- Uses --> ConfigLogic
+    %% Load/Save window state
 
     LibWindow -- Opens --> ReaderWindow
     LibWindow -- Uses --> LibLogic
-    LibWindow -- Uses --> RequestHandler %% Get book info for display?
-    LibWindow -- Uses --> ConfigLogic %% Load/Save window state
+    LibWindow -- Uses --> RequestHandler
+    %% Get book info for display?
+    LibWindow -- Uses --> ConfigLogic
+    %% Load/Save window state
 
-    ReaderWindow -- Uses --> ConfigLogic %% Load/Save settings & progress
+    ReaderWindow -- Uses --> ConfigLogic
+    %% Load/Save settings & progress
 
     SettingsDlg -- Uses --> ConfigLogic
 
     %% Logic & Data Interactions
     LibLogic -- Manages --> LibData
-    LibLogic -- Calls (Get Info) --> RequestHandler %% During add_to_library
+    LibLogic -- Calls (Get Info) --> RequestHandler
+    %% During add_to_library
 
     ConfigLogic -- Manages --> UserConfig
 
     RequestHandler -- Manages --> CookieData
-    RequestHandler -- Writes --> Novels %% When downloading chapters
+    RequestHandler -- Writes --> Novels
+    %% When downloading chapters
 
     %% Styling (Optional but helpful)
     style UserConfig fill:#f9f,stroke:#333,stroke-width:2px
