@@ -104,50 +104,79 @@ python gui.py
 
 ```mermaid
 graph LR
-    GUI_Module[GUI_Module gui.py\nNovelDownloaderGUI]
-    LibraryWindowModule[LibraryWindowModule library.py\nLibraryWindow]
-    ReaderWindowModule[ReaderWindowModule reader.py\nReader]
-    SettingsDialogModule[SettingsDialogModule settings.py\nSettingsDialog]
-    SplashScreenModule[SplashScreenModule splash.py\nSplashScreen]
+    %% UI Components
+    SplashScreen[SplashScreen splash.py] -- Starts --> MainGUI
+    MainGUI[NovelDownloaderGUI gui.py]
+    LibWindow[LibraryWindow library.py]
+    ReaderWindow[Reader reader.py]
+    SettingsDlg[SettingsDialog settings.py]
 
-    DownloaderLogic[DownloaderLogic gui.py\ndownload_novel,\nstart_download]
-    LibraryManager[LibraryManager library.py\nload/save/add/remove,\nLibrary Logic]
-    ConfigManager[ConfigManager config.py\nload/save UserConfig]
+    %% Core Logic & Data Management
+    LibLogic[Library Logic library.py\nload/save/add/remove]
+    ConfigLogic[Config Logic config.py\nload/save_user_config]
+    RequestHandler[RequestHandler request_handler.py\nAPI Calls & Parsing]
 
-    RequestHandlerModule[RequestHandlerModule request_handler.py\nRequestHandler,\nget_book_info,\ndown_text,\nextract_chapters]
+    %% Data Files
+    UserConfig[user_config.json]
+    LibData[library.json]
+    CookieData[cookie.json]
+    Novels[Novel Files\n.txt / .epub]
 
-    UserConfig_JSON[user_config.json\nUserConfig]
-    LibData_JSON[library.json\nLibraryData]
-    CookieData_JSON[cookie.json\nCookieData]
-    NovelFiles[NovelFiles]
+    %% UI Interactions
+    MainGUI -- Opens --> LibWindow
+    MainGUI -- Opens --> SettingsDlg
+    MainGUI -- Triggers Download --> RequestHandler
+    MainGUI -- Uses --> LibLogic %% e.g., on init
+    MainGUI -- Uses --> ConfigLogic %% Load/Save window state
 
-    GUI_Module --> DownloaderLogic
-    GUI_Module --> LibraryWindowModule
-    GUI_Module --> SettingsDialogModule
-    GUI_Module -- 调用 --> LibraryManager
-    GUI_Module -- 调用 --> ConfigManager
-    LibraryWindowModule --> LibraryManager
-    LibraryWindowModule --> ReaderWindowModule
-    ReaderWindowModule --> ConfigManager
-    SettingsDialogModule --> ConfigManager
+    LibWindow -- Opens --> ReaderWindow
+    LibWindow -- Uses --> LibLogic
+    LibWindow -- Uses --> RequestHandler %% Get book info for display?
+    LibWindow -- Uses --> ConfigLogic %% Load/Save window state
 
-    DownloaderLogic -- 使用 --> RequestHandlerModule
-    LibraryManager -- 使用 --> RequestHandlerModule
-    LibraryManager -- 操作 --> LibData_JSON
-    ConfigManager -- 操作 --> UserConfig_JSON
-    RequestHandlerModule -- 获取/更新 --> CookieData_JSON
-    DownloaderLogic -- 生成 --> NovelFiles
+    ReaderWindow -- Uses --> ConfigLogic %% Load/Save settings & progress
 
-    style UserConfig_JSON fill:#f9f,stroke:#333,stroke-width:2px
-    style LibData_JSON fill:#f9f,stroke:#333,stroke-width:2px
-    style CookieData_JSON fill:#f9f,stroke:#333,stroke-width:2px
-    style NovelFiles fill:#ccf,stroke:#333,stroke-width:2px
+    SettingsDlg -- Uses --> ConfigLogic
+
+    %% Logic & Data Interactions
+    LibLogic -- Manages --> LibData
+    LibLogic -- Calls (Get Info) --> RequestHandler %% During add_to_library
+
+    ConfigLogic -- Manages --> UserConfig
+
+    RequestHandler -- Manages --> CookieData
+    RequestHandler -- Writes --> Novels %% When downloading chapters
+
+    %% Styling (Optional but helpful)
+    style UserConfig fill:#f9f,stroke:#333,stroke-width:2px
+    style LibData fill:#f9f,stroke:#333,stroke-width:2px
+    style CookieData fill:#f9f,stroke:#333,stroke-width:2px
+    style Novels fill:#ccf,stroke:#333,stroke-width:2px
+
+    classDef ui fill:#lightblue,stroke:#333,stroke-width:2px;
+    classDef logic fill:#lightgreen,stroke:#333,stroke-width:2px;
+    classDef data fill:#lightgrey,stroke:#333,stroke-width:2px;
+
+    class MainGUI,LibWindow,ReaderWindow,SettingsDlg,SplashScreen ui;
+    class LibLogic,ConfigLogic,RequestHandler logic;
+    class UserConfig,LibData,CookieData,Novels data;
 ```
 
-*   **UI 层**：`customtkinter` 构建图形界面。
-*   **应用逻辑层**：核心业务逻辑，控制下载、书库、配置等。
-*   **数据交互层**：`request_handler.py` 负责网络请求和数据处理。
-*   **数据存储层**：JSON 和 TXT/EPUB 文件存储数据。
+*   **UI 组件 (蓝色)**：由 `customtkinter` 构建，负责用户交互。
+    *   `SplashScreen`: 应用启动时的闪屏。
+    *   `NovelDownloaderGUI`: 主界面，提供下载入口、书库和设置按钮。
+    *   `LibraryWindow`: 书库界面，展示已下载书籍，提供阅读和管理功能。
+    *   `ReaderWindow`: 阅读器界面，展示小说内容，提供阅读设置。
+    *   `SettingsDialog`: 设置对话框，配置下载、阅读器和外观选项。
+*   **核心逻辑 (绿色)**：处理应用的核心功能。
+    *   `Library Logic`: 管理 `library.json`，处理书籍的添加、删除、加载和保存。
+    *   `Config Logic`: 管理 `user_config.json`，处理用户配置的加载和保存（包括窗口状态、阅读进度等）。
+    *   `RequestHandler`: 负责所有与番茄小说服务器的交互，包括获取 Cookie、书籍信息、章节列表以及下载章节内容。
+*   **数据文件 (灰色)**：存储应用数据。
+    *   `user_config.json`: 保存用户偏好设置和状态。
+    *   `library.json`: 存储用户书库信息。
+    *   `cookie.json`: 存储用于请求的 Cookie。
+    *   `Novel Files`: 下载的小说文件（TXT 或 EPUB 格式）。
 
 ## 🔄 自动化构建
 
