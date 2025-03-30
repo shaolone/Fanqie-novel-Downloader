@@ -13,6 +13,7 @@ if sys.platform == 'win32':
 script_path = os.path.dirname(os.path.abspath(__file__))
 gui_path = os.path.join(script_path, 'gui.py')
 icon_path = os.path.join(script_path, 'assets', 'app_icon.ico') # Corrected icon path
+assets_path = os.path.join(script_path, 'assets') # 添加 assets 文件夹路径
 
 # 获取 customtkinter 库的路径
 try:
@@ -53,6 +54,8 @@ base_args = [
     '--hidden-import=splash',
     '--hidden-import=request_handler', # 添加 request_handler
     # '--uac-admin', # 暂时移除UAC，看是否是导致问题的原因之一，后续可加回
+    # 添加 assets 文件夹及其内容
+    f'--add-data={assets_path}{os.pathsep}assets',
 ]
 
 # 添加 customtkinter 数据文件

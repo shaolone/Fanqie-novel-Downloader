@@ -60,7 +60,8 @@ jobs:
 
       - name: 构建Windows可执行文件
         run: |
-          python build_exe.py --add-data="cookie.json;." --add-data="library.json;." --add-data="assets;assets"
+          # build_exe.py 内部已处理 assets，移除这里的重复添加
+          python build_exe.py --add-data="cookie.json;." --add-data="library.json;."
 
       - name: 压缩Windows可执行文件
         run: |
@@ -117,7 +118,8 @@ jobs:
 
       - name: 构建MacOS可执行文件
         run: |
-          python build_exe.py --add-data="cookie.json:." --add-data="library.json:." --add-data="assets:assets"
+          # build_exe.py 内部已处理 assets，移除这里的重复添加
+          python build_exe.py --add-data="cookie.json:." --add-data="library.json:."
 
       - name: 压缩MacOS可执行文件
         run: |
@@ -180,7 +182,8 @@ jobs:
 
       - name: 构建Linux可执行文件
         run: |
-          python build_exe.py --add-data="cookie.json:." --add-data="library.json:." --add-data="assets:assets"
+          # build_exe.py 内部已处理 assets，移除这里的重复添加
+          python build_exe.py --add-data="cookie.json:." --add-data="library.json:."
 
       - name: 压缩Linux可执行文件
         run: |

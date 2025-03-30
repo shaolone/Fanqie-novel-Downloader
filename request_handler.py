@@ -7,6 +7,11 @@ import re
 from bs4 import BeautifulSoup
 from config import CONFIG
 
+
+class CookieGenerationError(Exception):
+    """自定义 Cookie 生成错误"""
+    pass
+
 class RequestHandler:
     def __init__(self):
         self.config = CONFIG["request"]
@@ -23,25 +28,26 @@ class RequestHandler:
     def get_cookie(self):
         """生成或加载Cookie"""
         cookie_path = CONFIG["file"]["cookie_file"]
+        last_error = None
 
         if os.path.exists(cookie_path):
             try:
-                with open(cookie_path, 'r', encoding='utf-8') as f: # 添加 encoding
+                with open(cookie_path, 'r', encoding='utf-8') as f:
                     cookie_data = json.load(f)
                     # 确保加载的是字符串类型
                     if isinstance(cookie_data, str):
                         return cookie_data
                     else:
-                        print(f"警告: Cookie 文件 '{cookie_path}' 格式不正确，将尝试重新生成。")
+                        last_error = f"Cookie 文件 '{cookie_path}' 格式不正确"
             except FileNotFoundError:
                 pass # 文件不存在，继续生成
             except json.JSONDecodeError:
-                print(f"警告: Cookie 文件 '{cookie_path}' 解析失败，将尝试重新生成。")
+                last_error = f"Cookie 文件 '{cookie_path}' 解析失败"
             except Exception as e:
-                print(f"读取 Cookie 文件时发生未知错误: {e}")
+                last_error = f"读取 Cookie 文件时发生错误: {e}"
         
         # 生成新Cookie
-        for _ in range(10):
+        for attempt in range(10):
             novel_web_id = random.randint(10**18, 10**19-1)
             cookie = f'novel_web_id={novel_web_id}'
             try:
@@ -54,13 +60,21 @@ class RequestHandler:
                 if resp.ok:
                     # 确保目录存在
                     os.makedirs(os.path.dirname(cookie_path), exist_ok=True)
-                    with open(cookie_path, 'w', encoding='utf-8') as f: # 添加 encoding
-                        json.dump(cookie, f, ensure_ascii=False, indent=4) # 改进保存格式
+                    with open(cookie_path, 'w', encoding='utf-8') as f:
+                        json.dump(cookie, f, ensure_ascii=False, indent=4)
                     return cookie
             except Exception as e:
-                print(f"Cookie生成失败: {str(e)}")
+                last_error = f"Cookie生成失败(尝试{attempt+1}/10): {str(e)}"
                 time.sleep(0.5)
-        raise Exception("无法获取有效Cookie")
+        
+        raise CookieGenerationError(
+            f"无法获取有效Cookie\n"
+            f"可能原因:\n"
+            f"1. 网络连接问题\n"
+            f"2. 番茄小说服务器限制\n"
+            f"3. 文件权限问题\n"
+            f"最后一次错误: {last_error}"
+        )
 
     def get_book_info(self, book_id):
         """获取书名、作者、简介"""

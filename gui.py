@@ -46,7 +46,8 @@ class NovelDownloaderGUI(ctk.CTk):
         """加载应用图标"""
         self.icons = {}
         icon_size = (20, 20)
-        assets_path = "assets"
+        # 使用 resource_path 获取 assets 文件夹的绝对路径
+        assets_path = resource_path("assets")
         
         # 尝试加载图标
         try:
@@ -215,13 +216,25 @@ class NovelDownloaderGUI(ctk.CTk):
         if not save_path:
             save_path = CONFIG["file"].get("default_save_path", "downloads")
         
+        # 检查cookie是否可用
+        try:
+            # 尝试获取cookie，如果失败会抛出异常
+            self.request_handler.get_cookie()
+        except Exception as e:
+            self.log(f"Cookie错误: {str(e)}")
+            messagebox.showerror(
+                "Cookie错误",
+                f"无法获取有效Cookie，请检查网络连接或手动清除cookie.json文件\n\n错误详情:\n{str(e)}"
+            )
+            return
+        
         self.download_button.configure(state="disabled")
         self.is_downloading = True
         self.downloaded_chapters.clear()
         self.content_cache.clear()
         
-        threading.Thread(target=self.download_novel, 
-                       args=(novel_id, save_path), 
+        threading.Thread(target=self.download_novel,
+                       args=(novel_id, save_path),
                        daemon=True).start()
     
     def download_novel(self, book_id, save_path):
@@ -565,6 +578,17 @@ if __name__ == "__main__":
         root.withdraw()
         messagebox.showerror("错误", "未安装 customtkinter 模块，请安装后再运行程序")
         sys.exit(1)
+# 解决打包后的资源路径问题
+def resource_path(relative_path):
+    """获取打包后的资源绝对路径"""
+    try:
+        # PyInstaller创建临时文件夹存储资源
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 # 导入并显示启动画面
 try:
     from splash import SplashScreen # 导入 SplashScreen 类
@@ -576,7 +600,9 @@ try:
 
     # 3. 创建并显示启动画面，主应用实例作为父窗口
     # SplashScreen 内部会使用 after 调用 app.deiconify() 来显示主窗口
-    splash = SplashScreen(app, logo_path="assets/app_icon.png", duration=2.0)
+    # 使用 resource_path 获取 logo 路径
+    logo_path = resource_path("assets/app_icon.png")
+    splash = SplashScreen(app, logo_path=logo_path, duration=2.0)
     # splash.mainloop() # 不需要单独的 mainloop for splash
 
     # 4. 启动主应用的 mainloop
