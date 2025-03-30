@@ -104,30 +104,22 @@ python gui.py
 
 ```mermaid
 graph LR
-    subgraph UI_Layer
-        GUI_Module[GUI_Module (gui.py)\nNovelDownloaderGUI]
-        LibraryWindowModule[LibraryWindowModule (library.py)\nLibraryWindow]
-        ReaderWindowModule[ReaderWindowModule (reader.py)\nReader]
-        SettingsDialogModule[SettingsDialogModule (settings.py)\nSettingsDialog]
-        SplashScreenModule[SplashScreenModule (splash.py)\nSplashScreen]
-    end
+    GUI_Module[GUI_Module (gui.py)\nNovelDownloaderGUI]
+    LibraryWindowModule[LibraryWindowModule (library.py)\nLibraryWindow]
+    ReaderWindowModule[ReaderWindowModule (reader.py)\nReader]
+    SettingsDialogModule[SettingsDialogModule (settings.py)\nSettingsDialog]
+    SplashScreenModule[SplashScreenModule (splash.py)\nSplashScreen]
 
-    subgraph Application_Logic[应用逻辑层]
-        DownloaderLogic[DownloaderLogic (gui.py)\ndownload_novel,\nstart_download]
-        LibraryManager[LibraryManager (library.py)\nload/save/add/remove,\nLibrary Logic]
-        ConfigManager[ConfigManager (config.py)\nload/save UserConfig]
-    end
+    DownloaderLogic[DownloaderLogic (gui.py)\ndownload_novel,\nstart_download]
+    LibraryManager[LibraryManager (library.py)\nload/save/add/remove,\nLibrary Logic]
+    ConfigManager[ConfigManager (config.py)\nload/save UserConfig]
 
-    subgraph Data_Interaction[数据交互层]
-        RequestHandlerModule[请求处理模块 (request_handler.py)\nRequestHandler,\nget_book_info,\ndown_text,\nextract_chapters]
-    end
+    RequestHandlerModule[RequestHandlerModule (request_handler.py)\nRequestHandler,\nget_book_info,\ndown_text,\nextract_chapters]
 
-    subgraph Storage_Layer[数据存储层]
-        UserConfig_JSON[user_config.json\n用户配置]
-        LibData_JSON[library.json\n书库数据]
-        CookieData_JSON[cookie.json\nCookie]
-        NovelFiles[小说文件\n(*.txt, *.epub)]
-    end
+    UserConfig_JSON[user_config.json\n用户配置]
+    LibData_JSON[library.json\n书库数据]
+    CookieData_JSON[cookie.json\nCookie]
+    NovelFiles[小说文件\n(*.txt, *.epub)]
 
     GUI_Module --> DownloaderLogic
     GUI_Module --> LibraryWindowModule
