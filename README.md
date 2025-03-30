@@ -175,7 +175,7 @@ python gui.py
 
 ```mermaid
 graph LR
-    subgraph UI_Layer 用户界面 (UI Layer)
+    subgraph UI_Layer  用户界面 (UI Layer)
         GUI[主界面 (gui.py)]
         LibWin[书库窗口 (library.py)]
         ReaderWin[阅读器 (reader.py)]
@@ -183,17 +183,17 @@ graph LR
         Splash[启动画面 (splash.py)]
     end
 
-    subgraph Business_Logic 业务逻辑 (Business Logic)
+    subgraph Business_Logic  业务逻辑 (Business Logic)
         Config[配置管理 (config.py)]
         Library[书库逻辑 (library.py)]
         Downloader[下载逻辑 (gui.py)]
     end
 
-    subgraph Data_Interaction 数据交互 (Data Interaction)
+    subgraph Data_Interaction  数据交互 (Data Interaction)
         RequestHandler[网络请求 (request_handler.py)]
     end
 
-    subgraph Storage 数据存储 (Storage)
+    subgraph Storage_Layer  数据存储 (Storage)
         UserConfig[用户配置 (user_config.json)]
         LibData[书库数据 (library.json)]
         CookieData[Cookie (cookie.json)]
