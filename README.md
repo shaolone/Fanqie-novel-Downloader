@@ -104,7 +104,7 @@ python gui.py
 
 ```mermaid
 graph LR
-    subgraph UI_Layer 用户界面层
+    subgraph UI_Layer
         GUI_Module[主界面模块 (gui.py)]
         LibraryWindowModule[书库窗口模块 (library.py)]
         ReaderWindowModule[阅读器模块 (reader.py)]
@@ -112,17 +112,17 @@ graph LR
         SplashScreenModule[启动画面模块 (splash.py)]
     end
 
-    subgraph Application_Logic 应用逻辑层
+    subgraph Application_Logic
         DownloaderLogic[下载逻辑模块 (gui.py)]
         LibraryManager[书库管理模块 (library.py)]
         ConfigManager[配置管理模块 (config.py)]
     end
 
-    subgraph Data_Interaction 数据交互层
+    subgraph Data_Interaction
         RequestHandlerModule[请求处理模块 (request_handler.py)]
     end
 
-    subgraph Storage_Layer 数据存储层
+    subgraph Storage_Layer
         UserConfig[用户配置 (user_config.json)]
         LibData[书库数据 (library.json)]
         CookieData[Cookie数据 (cookie.json)]
