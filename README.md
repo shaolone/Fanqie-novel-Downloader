@@ -104,52 +104,7 @@ python gui.py
 
 ```mermaid
 graph LR
-    subgraph UI_Layer
-        GUI_Module[主界面模块 (gui.py)]
-        LibraryWindowModule[书库窗口模块 (library.py)]
-        ReaderWindowModule[阅读器模块 (reader.py)]
-        SettingsDialogModule[设置对话框模块 (settings.py)]
-        SplashScreenModule[启动画面模块 (splash.py)]
-    end
-
-    subgraph Application_Logic
-        DownloaderLogic[下载逻辑模块 (gui.py)]
-        LibraryManager[书库管理模块 (library.py)]
-        ConfigManager[配置管理模块 (config.py)]
-    end
-
-    subgraph Data_Interaction
-        RequestHandlerModule[请求处理模块 (request_handler.py)]
-    end
-
-    subgraph Storage_Layer
-        UserConfig[用户配置 (user_config.json)]
-        LibData[书库数据 (library.json)]
-        CookieData[Cookie数据 (cookie.json)]
-        NovelFiles[小说文件 (*.txt, *.epub)]
-    end
-
-    GUI_Module --> DownloaderLogic
-    GUI_Module --> LibraryWindowModule
-    GUI_Module --> SettingsDialogModule
-    GUI_Module -- 调用 --> LibraryManager
-    GUI_Module -- 调用 --> ConfigManager
-    LibraryWindowModule --> LibraryManager
-    LibraryWindowModule --> ReaderWindowModule
-    ReaderWindowModule -- 调用 --> ConfigManager
-    SettingsDialogModule --> ConfigManager
-
-    DownloaderLogic -- 使用 --> RequestHandlerModule
-    LibraryManager -- 使用 --> RequestHandlerModule
-    LibraryManager -- 操作 --> LibData
-    ConfigManager -- 操作 --> UserConfig
-    RequestHandlerModule -- 获取/更新 --> CookieData
-    DownloaderLogic -- 生成 --> NovelFiles
-
-    style UserConfig fill:#f9f,stroke:#333,stroke-width:2px
-    style LibData fill:#f9f,stroke:#333,stroke-width:2px
-    style CookieData fill:#f9f,stroke:#333,stroke-width:2px
-    style NovelFiles fill:#ccf,stroke:#333,stroke-width:2px
+    A[Square Rect] -- Link text --> B(Round Rect)
 ```
 
 *   **UI 层**：`customtkinter` 构建图形界面。
@@ -159,21 +114,21 @@ graph LR
 
 ## 🔄 自动化构建
 
-GitHub Actions 实现 CI/CD，`build-and-release.yml` 定义构建流程。
+GitHub Actions 实现 CI/CD，`build-and-release.yml` 描述了详细的构建步骤。
 
 ### ⚙️ 自动构建流程
 
-1.  **平台兼容**：支持 Windows, macOS, Linux。
+1.  **多平台构建**：支持 Windows, macOS, Linux。
 2.  **环境配置**：自动配置 Python 环境和依赖。
 3.  **代码编译**：PyInstaller 打包 Python 代码。
 4.  **性能优化**：优化体积和性能。
-5.  **版本发布**：上传到 GitHub Releases。
+5.  **版本发布**：自动上传到 GitHub Releases 页面。
 
 ### 🚀 手动构建与发布
 
 1.  **Actions 页面**：在 GitHub 仓库 Actions 页面选择 "build-and-release" 工作流。
 2.  **运行工作流**：点击 "Run workflow"，填写版本信息。
-3.  **等待完成**：等待 GitHub Actions 完成构建和发布。
+3.  **等待完成**：等待 GitHub Actions 自动完成构建和发布。
 
 ## ❓ 常见问题
 
@@ -189,10 +144,9 @@ GitHub Actions 实现 CI/CD，`build-and-release.yml` 定义构建流程。
 <details>
 <summary><b>程序启动异常？</b></summary>
 
-* 检查操作系统版本兼容性。
-* 源码运行检查依赖安装。
-* 系统配置是否满足最低要求。
-* 重新下载最新发布版。
+* 确保您下载了正确的操作系统版本。
+* 检查系统是否满足最低要求。
+* 尝试重新下载最新发布版。
 
 </details>
 
@@ -204,7 +158,7 @@ MIT License - 详见 [LICENSE](LICENSE) 文件。
 
 <p align="center">
 
-**⭐ 觉得好用？请 Star 支持一下！⭐** 
+**⭐ 感谢您的使用，欢迎 Star 项目以支持维护和更新！⭐** 
 
 [GitHub 仓库](https://github.com/POf-L/Fanqie-Tomato-Downloader) | [问题反馈](https://github.com/POf-L/Fanqie-Tomato-Downloader/issues)
 
