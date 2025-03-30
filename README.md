@@ -116,10 +116,10 @@ graph LR
 
     RequestHandlerModule[RequestHandlerModule request_handler.py\nRequestHandler,\nget_book_info,\ndown_text,\nextract_chapters]
 
-    UserConfig_JSON[user_config.json\n用户配置]
-    LibData_JSON[library.json\n书库数据]
-    CookieData_JSON[cookie.json\nCookie]
-    NovelFiles[小说文件\n(*.txt, *.epub)]
+    UserConfig_JSON[user_config.json\nUserConfig]
+    LibData_JSON[library.json\nLibraryData]
+    CookieData_JSON[cookie.json\nCookieData]
+    NovelFiles[NovelFiles]
 
     GUI_Module --> DownloaderLogic
     GUI_Module --> LibraryWindowModule
