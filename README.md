@@ -104,17 +104,17 @@ python gui.py
 
 ```mermaid
 graph LR
-    GUI_Module[GUI_Module (gui.py)\nNovelDownloaderGUI]
-    LibraryWindowModule[LibraryWindowModule (library.py)\nLibraryWindow]
-    ReaderWindowModule[ReaderWindowModule (reader.py)\nReader]
-    SettingsDialogModule[SettingsDialogModule (settings.py)\nSettingsDialog]
-    SplashScreenModule[SplashScreenModule (splash.py)\nSplashScreen]
+    GUI_Module[GUI_Module gui.py\nNovelDownloaderGUI]
+    LibraryWindowModule[LibraryWindowModule library.py\nLibraryWindow]
+    ReaderWindowModule[ReaderWindowModule reader.py\nReader]
+    SettingsDialogModule[SettingsDialogModule settings.py\nSettingsDialog]
+    SplashScreenModule[SplashScreenModule splash.py\nSplashScreen]
 
-    DownloaderLogic[DownloaderLogic (gui.py)\ndownload_novel,\nstart_download]
-    LibraryManager[LibraryManager (library.py)\nload/save/add/remove,\nLibrary Logic]
-    ConfigManager[ConfigManager (config.py)\nload/save UserConfig]
+    DownloaderLogic[DownloaderLogic gui.py\ndownload_novel,\nstart_download]
+    LibraryManager[LibraryManager library.py\nload/save/add/remove,\nLibrary Logic]
+    ConfigManager[ConfigManager config.py\nload/save UserConfig]
 
-    RequestHandlerModule[RequestHandlerModule (request_handler.py)\nRequestHandler,\nget_book_info,\ndown_text,\nextract_chapters]
+    RequestHandlerModule[RequestHandlerModule request_handler.py\nRequestHandler,\nget_book_info,\ndown_text,\nextract_chapters]
 
     UserConfig_JSON[user_config.json\n用户配置]
     LibData_JSON[library.json\n书库数据]
