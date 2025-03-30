@@ -104,7 +104,7 @@ python gui.py
 
 ```mermaid
 graph LR
-    subgraph UI_Layer[用户界面层]
+    subgraph UI_Layer
         GUI_Module[GUI_Module (gui.py)\nNovelDownloaderGUI]
         LibraryWindowModule[LibraryWindowModule (library.py)\nLibraryWindow]
         ReaderWindowModule[ReaderWindowModule (reader.py)\nReader]
