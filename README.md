@@ -36,7 +36,7 @@
 <details>
 <summary><b>零安装，零依赖，点击展开详细步骤</b></summary>
 
-利用 GitHub Actions 即可在线下载小说，无需本地安装任何软件！
+利用 GitHub Actions 即可在线下载小说，无需本地安装任何软件即可下载小说：
 
 1.  访问 GitHub 仓库页面，点击 **"Actions"** 选项卡。
 2.  在左侧导航栏，选择 **"在线下载小说"** 工作流。
@@ -89,14 +89,14 @@ python gui.py
 
 ### 🔍 如何查找小说 ID？
 
-在番茄小说网站，打开想要下载的小说页面，浏览器地址栏 URL 中的数字即为小说 ID。
+在番茄小说网站，打开想要下载的小说页面，浏览器地址栏 URL 中的数字部分就是小说 ID。
 
 >  **示例：** `https://fanqienovel.com/page/7105916563`  的 ID 为 `7105916563`。
 
 ### 📂 文件保存位置？
 
 - **GUI 客户端**：文件保存在您在设置中指定的路径。
-- **在线下载**：文件将作为 GitHub Artifacts 提供下载 (7 天有效期)。
+- **在线下载**：文件将作为GitHub Artifacts提供下载 (7 天有效期)。
 
 ## 🛠️ 技术架构
 
@@ -114,11 +114,11 @@ graph LR
 
 ## 🔄 自动化构建
 
-GitHub Actions 实现 CI/CD，`build-and-release.yml` 描述了详细的构建步骤。
+GitHub Actions 实现 CI/CD，`build-and-release.yml` 定义构建流程。
 
 ### ⚙️ 自动构建流程
 
-1.  **多平台构建**：支持 Windows, macOS, Linux。
+1.  **多平台兼容**：支持 Windows, macOS, Linux。
 2.  **环境配置**：自动配置 Python 环境和依赖。
 3.  **代码编译**：PyInstaller 打包 Python 代码。
 4.  **性能优化**：优化体积和性能。
@@ -128,7 +128,7 @@ GitHub Actions 实现 CI/CD，`build-and-release.yml` 描述了详细的构建�
 
 1.  **Actions 页面**：在 GitHub 仓库 Actions 页面选择 "build-and-release" 工作流。
 2.  **运行工作流**：点击 "Run workflow"，填写版本信息。
-3.  **等待完成**：等待 GitHub Actions 自动完成构建和发布。
+3.  **等待完成**：等待 GitHub Actions 完成构建和发布。
 
 ## ❓ 常见问题
 
