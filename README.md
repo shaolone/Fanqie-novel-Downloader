@@ -105,17 +105,17 @@ python gui.py
 ```mermaid
 graph LR
     subgraph UI_Layer[用户界面层]
-        GUI_Module[主界面模块 (gui.py)\nNovelDownloaderGUI]
-        LibraryWindowModule[书库窗口模块 (library.py)\nLibraryWindow]
-        ReaderWindowModule[阅读器模块 (reader.py)\nReader]
-        SettingsDialogModule[设置对话框模块 (settings.py)\nSettingsDialog]
-        SplashScreenModule[启动画面模块 (splash.py)\nSplashScreen]
+        GUI_Module[GUI_Module (gui.py)\nNovelDownloaderGUI]
+        LibraryWindowModule[LibraryWindowModule (library.py)\nLibraryWindow]
+        ReaderWindowModule[ReaderWindowModule (reader.py)\nReader]
+        SettingsDialogModule[SettingsDialogModule (settings.py)\nSettingsDialog]
+        SplashScreenModule[SplashScreenModule (splash.py)\nSplashScreen]
     end
 
     subgraph Application_Logic[应用逻辑层]
-        DownloaderLogic[下载逻辑模块 (gui.py)\ndownload_novel,\nstart_download]
-        LibraryManager[书库管理模块\n(library.py)\nload/save/add/remove,\nLibrary Logic]
-        ConfigManager[配置管理模块\n(config.py)\nload/save UserConfig]
+        DownloaderLogic[DownloaderLogic (gui.py)\ndownload_novel,\nstart_download]
+        LibraryManager[LibraryManager (library.py)\nload/save/add/remove,\nLibrary Logic]
+        ConfigManager[ConfigManager (config.py)\nload/save UserConfig]
     end
 
     subgraph Data_Interaction[数据交互层]
