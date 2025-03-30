@@ -175,47 +175,47 @@ python gui.py
 
 ```mermaid
 graph LR
-    subgraph UI_Layer  用户界面 (UI Layer)
+    subgraph UI_Layer 用户界面层
         GUI[主界面 (gui.py)]
         LibWin[书库窗口 (library.py)]
         ReaderWin[阅读器 (reader.py)]
-        SettingsWin[设置 (settings.py)]
+        SettingsWin[设置窗口 (settings.py)]
         Splash[启动画面 (splash.py)]
     end
 
-    subgraph Business_Logic  业务逻辑 (Business Logic)
-        Config[配置管理 (config.py)]
-        Library[书库逻辑 (library.py)]
-        Downloader[下载逻辑 (gui.py)]
+    subgraph Application_Logic 应用逻辑层
+        DownloaderModule[下载模块 (gui.py)]
+        LibraryManagerModule[书库管理模块 (library.py)]
+        ConfigManagerModule[配置管理模块 (config.py)]
     end
 
-    subgraph Data_Interaction  数据交互 (Data Interaction)
+    subgraph Data_Interaction 数据交互层
         RequestHandler[网络请求 (request_handler.py)]
     end
 
-    subgraph Storage_Layer  数据存储 (Storage)
+    subgraph Storage_Layer 数据存储层
         UserConfig[用户配置 (user_config.json)]
         LibData[书库数据 (library.json)]
         CookieData[Cookie (cookie.json)]
         NovelFiles[小说文件 (*.txt)]
     end
 
-    GUI --> Downloader
+    GUI --> DownloaderModule
     GUI --> LibWin
     GUI --> SettingsWin
-    GUI -- 调用 --> Library
-    GUI -- 调用 --> Config
-    LibWin --> Library
+    GUI -- 调用 --> LibraryManagerModule
+    GUI -- 调用 --> ConfigManagerModule
+    LibWin --> LibraryManagerModule
     LibWin --> ReaderWin
-    ReaderWin -- 调用 --> Config
-    SettingsWin -- 调用 --> Config
+    ReaderWin -- 调用 --> ConfigManagerModule
+    SettingsWin -- 调用 --> ConfigManagerModule
 
-    Downloader -- 使用 --> RequestHandler
-    Library -- 使用 --> RequestHandler
-    Library -- 操作 --> LibData
-    Config -- 操作 --> UserConfig
+    DownloaderModule -- 使用 --> RequestHandler
+    LibraryManagerModule -- 使用 --> RequestHandler
+    LibraryManagerModule -- 操作 --> LibData
+    ConfigManagerModule -- 操作 --> UserConfig
     RequestHandler -- 获取/更新 --> CookieData
-    Downloader -- 生成 --> NovelFiles
+    DownloaderModule -- 生成 --> NovelFiles
 
     style UserConfig fill:#f9f,stroke:#333,stroke-width:2px
     style LibData fill:#f9f,stroke:#333,stroke-width:2px
