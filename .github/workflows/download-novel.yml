@@ -1,4 +1,4 @@
-name: 在线下载小说
+name: 在线下载小说 (仅TXT)
 
 on:
   workflow_dispatch:  # 允许手动触发工作流
@@ -10,14 +10,6 @@ on:
         description: '下载线程数 (1-10)'
         required: true
         default: '5'
-      format:
-        description: '输出格式'
-        required: true
-        type: choice
-        options:
-          - txt
-          - epub
-        default: 'txt'
 
 # 添加必要的权限
 permissions:
@@ -41,7 +33,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install ebooklib
+          # ebooklib 不再需要
 
       - name: 确保cookie.json存在
         run: |
@@ -49,7 +41,8 @@ jobs:
             echo '""' > "./cookie.json"
           fi
 
-      - name: 安装虚拟显示服务
+      - name: 安装虚拟显示服务 (如果脚本需要，否则可以移除)
+        # 注意：原始脚本中并未实际使用xvfb，如果确定不需要可以移除此步骤
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
@@ -67,246 +60,16 @@ jobs:
           import random
           from concurrent.futures import ThreadPoolExecutor, as_completed
           from collections import OrderedDict
-          from ebooklib import epub
-          import html # 用于HTML转义
+          # ebooklib 和 html 不再需要
 
           # 小说ID和保存路径
           novel_id = sys.argv[1]
-          output_format = sys.argv[2].lower()
-          threads_count = int(sys.argv[3])
+          # output_format = sys.argv[2].lower() # 格式固定为 txt
+          threads_count = int(sys.argv[2]) # 参数索引调整
           save_path = "novel_output"
 
-          # EPUB生成函数
-          def generate_epub(txt_file_path, output_path=None):
-              """将TXT文件转换为EPUB格式"""
-              if not os.path.exists(txt_file_path):
-                  raise FileNotFoundError(f"找不到文件: {txt_file_path}")
-
-              # 如果未指定输出路径，则使用与TXT文件相同的路径，但扩展名为.epub
-              if output_path is None:
-                  output_path = os.path.splitext(txt_file_path)[0] + ".epub"
-
-              # 创建EPUB书籍
-              book = epub.EpubBook()
-
-              # 读取TXT文件内容
-              with open(txt_file_path, 'r', encoding='utf-8') as f:
-                  content = f.read()
-
-              # 解析书名和作者
-              book_info = {}
-              book_name_match = re.search(r'书名：《(.+?)》', content)
-              if book_name_match:
-                  book_info['title'] = book_name_match.group(1)
-              else:
-                  book_info['title'] = os.path.basename(os.path.splitext(txt_file_path)[0])
-
-              author_match = re.search(r'作者：(.+?)\n', content)
-              if author_match:
-                  book_info['author'] = author_match.group(1)
-              else:
-                  book_info['author'] = "未知作者"
-
-              # 设置书籍元数据
-              book.set_title(book_info['title'])
-              book.set_language('zh-CN')
-              book.add_author(book_info['author'])
-
-              # 解析简介
-              description_match = re.search(r'简介：\n(.*?)(?=\n\n)', content, re.DOTALL)
-              if description_match:
-                  book.add_metadata('DC', 'description', description_match.group(1))
-
-              # 创建CSS样式
-              style = '''
-              @namespace epub "http://www.idpf.org/2007/ops";
-              body {
-                  font-family: SimSun, serif;
-                  line-height: 1.5;
-                  text-align: justify;
-                  margin: 0 5px;
-              }
-              h1 {
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: 1.5em;
-                  margin: 1em 0;
-              }
-              h2 {
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: 1.2em;
-                  margin: 0.8em 0;
-              }
-              p {
-                  text-indent: 2em;
-                  margin: 0.5em 0;
-              }
-              '''
-
-              css_file = epub.EpubItem(
-                  uid="style_default",
-                  file_name="style/default.css",
-                  media_type="text/css",
-                  content=style
-              )
-              book.add_item(css_file)
-
-              # 创建封面页
-              cover_html = f'''<?xml version="1.0" encoding="utf-8"?>
-              <!DOCTYPE html>
-              <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
-              <head>
-                  <title>{book_info['title']}</title>
-                  <link rel="stylesheet" href="style/default.css" type="text/css" />
-              </head>
-              <body>
-                  <h1>{book_info['title']}</h1>
-                  <h2>作者：{book_info['author']}</h2>
-              </body>
-              </html>
-              '''
-
-              cover = epub.EpubHtml(
-                  title='封面',
-                  file_name='cover.xhtml',
-                  content=cover_html
-              )
-              cover.add_item(css_file)
-              book.add_item(cover)
-
-              # 创建简介页
-              intro_html = f'''<?xml version="1.0" encoding="utf-8"?>
-              <!DOCTYPE html>
-              <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
-              <head>
-                  <title>简介</title>
-                  <link rel="stylesheet" href="style/default.css" type="text/css" />
-              </head>
-              <body>
-                  <h1>简介</h1>
-              '''
-
-              if description_match:
-                  # 使用变量来避免在f-string中使用反斜杠
-                  newline_replacement = "</p><p>"
-                  intro_html += f'<p>{description_match.group(1).replace(chr(10), newline_replacement)}</p>'
-              else:
-                  intro_html += '<p>暂无简介</p>'
-
-              intro_html += '''
-              </body>
-              </html>
-              '''
-
-              intro = epub.EpubHtml(
-                  title='简介',
-                  file_name='intro.xhtml',
-                  content=intro_html
-              )
-              intro.add_item(css_file)
-              book.add_item(intro)
-
-              # 解析章节
-              chapters = []
-              # 改进章节匹配模式，尝试匹配更多格式，包括非“第X章”开头的标题
-              # 匹配以换行符开头，后跟非空白字符（作为标题），然后是两个换行符，再捕获内容
-              # 停止条件是下一个类似的标题或文件末尾
-              chapter_pattern = re.compile(r'\n([^\n\s].*?)\n\n(.*?)(?=\n[^\n\s].*?\n\n|\Z)', re.DOTALL)
-              chapter_matches = chapter_pattern.findall(content)
-              
-              # 过滤掉可能的非章节标题匹配（例如简介后的第一段）
-              # 假设章节标题通常较短，并且可能包含“章”、“节”、“回”、“番外”等关键字
-              valid_chapter_matches = []
-              intro_end_pos = content.find('简介：')
-              if intro_end_pos != -1:
-                  intro_end_pos = content.find('\n\n', intro_end_pos) # 找到简介后的第一个空行
-              
-              for title, chap_content in chapter_matches:
-                  # 检查标题是否在简介之后，并且看起来像一个章节标题
-                  title_start_pos = content.find('\n' + title + '\n\n')
-                  if intro_end_pos == -1 or title_start_pos > intro_end_pos:
-                       # 简单的启发式规则：标题长度小于50，或者包含常见章节关键字
-                      if len(title.strip()) < 50 or any(kw in title for kw in ['章', '节', '回', '番外', '序', '篇', '卷']):
-                           valid_chapter_matches.append((title.strip(), chap_content))
-              
-              chapter_matches = valid_chapter_matches # 使用过滤后的章节
-
-              # 如果没有找到章节，尝试其他格式
-              if not chapter_matches:
-                  # 上面的改进模式已包含特殊章节，此部分不再需要
-                  # special_chapter_pattern = re.compile(r'\n((?:第\d+章|番外|特别篇|if线).+?)\n\n(.*?)(?=\n(?:第\d+章|番外|特别篇|if线)|\Z)', re.DOTALL)
-                  chapter_matches = special_chapter_pattern.findall(content)
-
-              # 如果仍然没有找到章节，将整个内容作为一个章节
-              if not chapter_matches:
-                  # 去掉开头的书名、作者和简介
-                  main_content = re.sub(r'^.*?简介：\n.*?\n\n', '', content, flags=re.DOTALL)
-                  chapter_matches = [('全文', main_content)]
-
-              # 添加章节
-              for i, (title, content) in enumerate(chapter_matches):
-                  # 清理章节内容
-                  chapter_content = content.strip()
-
-                  # 创建章节HTML
-                  chapter_html = f'''<?xml version="1.0" encoding="utf-8"?>
-                  <!DOCTYPE html>
-                  <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
-                  <head>
-                      <title>{title}</title>
-                      <link rel="stylesheet" href="style/default.css" type="text/css" />
-                  </head>
-                  <body>
-                      <h2>{title}</h2>
-                  '''
-
-                  # 处理段落
-                  # 处理段落 - 按空行分割，并进行HTML转义
-                  paragraphs = re.split(r'\n\s*\n+', chapter_content) # 按一个或多个空行分割
-                  for para in paragraphs:
-                      para_text = para.strip()
-                      if para_text:
-                          # 对段落内容进行HTML转义
-                          escaped_para = html.escape(para_text, quote=False)
-                          # 将段落内的换行符转换成 <br /> (如果需要保留段内换行)
-                          # escaped_para = escaped_para.replace('\n', '<br />\n')
-                          chapter_html += f'<p>{escaped_para}</p>\n'
-                  chapter_html += '''
-                  </body>
-                  </html>
-                  '''
-
-                  # 创建章节
-                  chapter = epub.EpubHtml(
-                      title=title,
-                      file_name=f'chapter_{i+1}.xhtml',
-                      content=chapter_html
-                  )
-                  chapter.add_item(css_file)
-                  book.add_item(chapter)
-                  chapters.append(chapter)
-
-              # 添加目录
-              book.toc = [
-                  epub.Link('cover.xhtml', '封面', 'cover'),
-                  epub.Link('intro.xhtml', '简介', 'intro')
-              ] + [
-                  epub.Link(f'chapter_{i+1}.xhtml', title, f'chapter_{i+1}')
-                  for i, (title, _) in enumerate(chapter_matches)
-              ]
-
-              # 添加spine
-              book.spine = ['nav', cover, intro] + chapters
-
-              # 添加NCX和导航文件
-              book.add_item(epub.EpubNcx())
-              book.add_item(epub.EpubNav())
-
-              # 写入EPUB文件
-              epub.write_epub(output_path, book, {})
-
-              return output_path
+          # EPUB生成函数 (已移除)
+          # def generate_epub(...): ...
 
           # 确保输出目录存在
           os.makedirs(save_path, exist_ok=True)
@@ -492,9 +255,8 @@ jobs:
                   with open(output_file, 'w', encoding='utf-8') as f:
                       f.write(f"书名：《{name}》\n作者：{author_name}\n\n简介：\n{description}\n\n")
 
-                  # 如果选择了EPUB格式，则创建EPUB文件
-                  if output_format == 'epub':
-                      print("\n将生成EPUB格式文件...")
+                  # 不再需要 EPUB 相关逻辑
+                  # if output_format == 'epub': ...
 
                   # 下载章节
                   total_chapters = len(chapters)
@@ -558,16 +320,8 @@ jobs:
                   print(f"\n下载完成！成功：{success_count}章，失败：{total_chapters - success_count}章")
                   print(f"文件保存在：{output_file}")
 
-                  # 如果选择了EPUB格式，则生成EPUB文件
-                  if output_format == 'epub':
-                      try:
-                          print("正在生成EPUB文件...")
-                          epub_file = generate_epub(output_file)
-                          print(f"EPUB文件生成成功：{epub_file}")
-                      except Exception as e:
-                          print(f"错误：生成EPUB文件失败: {str(e)}")
-                          # 可以选择在这里抛出异常或退出，以使Action失败
-                          # raise e # 或者 sys.exit(1)
+                  # 不再生成EPUB
+                  # if output_format == 'epub': ...
 
                   return True
 
@@ -580,7 +334,7 @@ jobs:
           print(f"开始下载小说 ID: {novel_id}")
           print(f"保存路径: {save_path}")
           print(f"使用线程数: {threads_count}")
-          print(f"输出格式: {output_format}")
+          print(f"输出格式: txt") # 明确输出格式
 
           success = download_novel(novel_id, save_path)
 
@@ -599,22 +353,24 @@ jobs:
 
       - name: 下载小说
         run: |
-          echo "开始下载小说..."
-          python download_novel.py "${{ github.event.inputs.novel_id }}" "${{ github.event.inputs.format }}" "${{ github.event.inputs.threads }}"
+          echo "开始下载小说 (TXT格式)..."
+          # 不再传递 format 参数
+          python download_novel.py "${{ github.event.inputs.novel_id }}" "${{ github.event.inputs.threads }}"
 
       - name: 压缩下载结果
         run: |
-          cd novel_output && zip -r ../novel_files.zip *
+          cd novel_output && zip -r ../novel_files.zip .
 
       - name: 上传下载结果
         uses: actions/upload-artifact@v4
         with:
-          name: novel-${{ github.event.inputs.novel_id }}-${{ github.event.inputs.format }}
+          # 更新 Artifact 名称以反映仅 TXT
+          name: novel-${{ github.event.inputs.novel_id }}-txt
           path: novel_files.zip
           retention-days: 7  # 文件保存7天
 
       - name: 提供下载信息
         run: |
-          echo "✅ 小说下载完成！"
+          echo "✅ 小说 TXT 文件下载完成！"
           echo "请点击上方 'Summary' 标签，然后在 'Artifacts' 部分下载小说文件。"
           echo "文件保存期限为7天。"
