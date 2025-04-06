@@ -68,6 +68,7 @@ jobs:
           from concurrent.futures import ThreadPoolExecutor, as_completed
           from collections import OrderedDict
           from ebooklib import epub
+          import html # 用于HTML转义
 
           # 小说ID和保存路径
           novel_id = sys.argv[1]
@@ -208,13 +209,33 @@ jobs:
 
               # 解析章节
               chapters = []
-              chapter_pattern = re.compile(r'\n(第\d+章.+?)\n\n(.*?)(?=\n第\d+章|\Z)', re.DOTALL)
+              # 改进章节匹配模式，尝试匹配更多格式，包括非“第X章”开头的标题
+              # 匹配以换行符开头，后跟非空白字符（作为标题），然后是两个换行符，再捕获内容
+              # 停止条件是下一个类似的标题或文件末尾
+              chapter_pattern = re.compile(r'\n([^\n\s].*?)\n\n(.*?)(?=\n[^\n\s].*?\n\n|\Z)', re.DOTALL)
               chapter_matches = chapter_pattern.findall(content)
+              
+              # 过滤掉可能的非章节标题匹配（例如简介后的第一段）
+              # 假设章节标题通常较短，并且可能包含“章”、“节”、“回”、“番外”等关键字
+              valid_chapter_matches = []
+              intro_end_pos = content.find('简介：')
+              if intro_end_pos != -1:
+                  intro_end_pos = content.find('\n\n', intro_end_pos) # 找到简介后的第一个空行
+              
+              for title, chap_content in chapter_matches:
+                  # 检查标题是否在简介之后，并且看起来像一个章节标题
+                  title_start_pos = content.find('\n' + title + '\n\n')
+                  if intro_end_pos == -1 or title_start_pos > intro_end_pos:
+                       # 简单的启发式规则：标题长度小于50，或者包含常见章节关键字
+                      if len(title.strip()) < 50 or any(kw in title for kw in ['章', '节', '回', '番外', '序', '篇', '卷']):
+                           valid_chapter_matches.append((title.strip(), chap_content))
+              
+              chapter_matches = valid_chapter_matches # 使用过滤后的章节
 
               # 如果没有找到章节，尝试其他格式
               if not chapter_matches:
-                  # 尝试匹配特殊章节格式（如番外、特别篇等）
-                  special_chapter_pattern = re.compile(r'\n((?:第\d+章|番外|特别篇|if线).+?)\n\n(.*?)(?=\n(?:第\d+章|番外|特别篇|if线)|\Z)', re.DOTALL)
+                  # 上面的改进模式已包含特殊章节，此部分不再需要
+                  # special_chapter_pattern = re.compile(r'\n((?:第\d+章|番外|特别篇|if线).+?)\n\n(.*?)(?=\n(?:第\d+章|番外|特别篇|if线)|\Z)', re.DOTALL)
                   chapter_matches = special_chapter_pattern.findall(content)
 
               # 如果仍然没有找到章节，将整个内容作为一个章节
@@ -241,11 +262,16 @@ jobs:
                   '''
 
                   # 处理段落
-                  paragraphs = chapter_content.split('\n')
+                  # 处理段落 - 按空行分割，并进行HTML转义
+                  paragraphs = re.split(r'\n\s*\n+', chapter_content) # 按一个或多个空行分割
                   for para in paragraphs:
-                      if para.strip():
-                          chapter_html += f'<p>{para.strip()}</p>\n'
-
+                      para_text = para.strip()
+                      if para_text:
+                          # 对段落内容进行HTML转义
+                          escaped_para = html.escape(para_text, quote=False)
+                          # 将段落内的换行符转换成 <br /> (如果需要保留段内换行)
+                          # escaped_para = escaped_para.replace('\n', '<br />\n')
+                          chapter_html += f'<p>{escaped_para}</p>\n'
                   chapter_html += '''
                   </body>
                   </html>
@@ -539,7 +565,9 @@ jobs:
                           epub_file = generate_epub(output_file)
                           print(f"EPUB文件生成成功：{epub_file}")
                       except Exception as e:
-                          print(f"生成EPUB文件失败: {str(e)}")
+                          print(f"错误：生成EPUB文件失败: {str(e)}")
+                          # 可以选择在这里抛出异常或退出，以使Action失败
+                          # raise e # 或者 sys.exit(1)
 
                   return True
 
@@ -565,8 +593,8 @@ jobs:
                   file_size = os.path.getsize(file_path) / 1024  # KB
                   print(f"- {file} ({file_size:.2f} KB)")
           else:
-              print("下载失败，请检查错误信息")
-              sys.exit(1)
+              print("下载或处理失败，请检查错误信息")
+              sys.exit(1) # 确保在任何失败情况下都退出
           EOF
 
       - name: 下载小说
