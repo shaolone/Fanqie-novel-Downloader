@@ -187,7 +187,9 @@ jobs:
               '''
 
               if description_match:
-                  intro_html += f'<p>{description_match.group(1).replace("\n", "</p><p>")}</p>'
+                  # 使用变量来避免在f-string中使用反斜杠
+                  newline_replacement = "</p><p>"
+                  intro_html += f'<p>{description_match.group(1).replace(chr(10), newline_replacement)}</p>'
               else:
                   intro_html += '<p>暂无简介</p>'
 
