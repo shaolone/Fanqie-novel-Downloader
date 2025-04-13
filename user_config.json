@@ -1,6 +1,6 @@
 {
     "request": {
-        "max_workers": 5,
+        "max_workers": 15,
         "max_retries": 3,
         "request_timeout": 15,
         "user_agents": [
