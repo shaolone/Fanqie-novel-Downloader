@@ -132,7 +132,7 @@ jobs:
 
               while retry_count < max_retries:
                   try:
-                      api_url = f"https://api.cenguigui.cn/api/tomato/content.php?item_id={it}"
+                      api_url = f"https://qimao.tutuxka.eu.org/api/fanqie.php?item_ids={it}"
                       response = requests.get(api_url, timeout=CONFIG["request_timeout"])
                       data = response.json()
 
