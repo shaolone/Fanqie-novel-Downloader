@@ -108,7 +108,7 @@ class RequestHandler:
 
     def extract_chapters(self, book_id):
         """解析章节列表"""
-        url = f'https://api5-normal-lf.fqnovel.com/reading/bookapi/search/{book_id}/v'
+        url = f'https://fanqienovel.com/page/{book_id}'
         response = self.session.get(url, headers=self.get_headers())
         soup = BeautifulSoup(response.text, 'html.parser')
         
