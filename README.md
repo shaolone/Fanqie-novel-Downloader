@@ -38,7 +38,6 @@ Linux:  终端执行 chmod +x 番茄小说下载器 && ./番茄小说下载器
 git clone https://github.com/rabbits0209/Fanqie-novel-Downloader.git
 cd Fanqie-novel-Downloader && pip install -r requirements.txt
 python gui.py  # 启动图形界面
-python cli.py  # 或使用命令行模式
 ```
 
 ---
@@ -73,13 +72,6 @@ graph TD
 ---
 
 ## 📌 高级功能
-
-### 🔍 智能搜索
-```python
-# 通过API直接搜索书籍
-from fanqie_api import search_book
-results = search_book("三体", max_results=5)
-```
 
 ### ⚡ 性能调优
 ```yaml
