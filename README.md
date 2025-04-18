@@ -2,15 +2,15 @@
 
 <div align="center">
 
-[![GitHub stars](https://img.shields.io/github/stars/rabbits0209/Fanqie-Tomato-Downloader?style=flat-square&logo=github)](https://github.com/rabbits0209/Fanqie-Tomato-Downloader/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/rabbits0209/Fanqie-Tomato-Downloader?style=flat-square&logo=github)](https://github.com/rabbits0209/Fanqie-Tomato-Downloader/network/members)
-[![GitHub issues](https://img.shields.io/github/issues/rabbits0209/Fanqie-Tomato-Downloader?style=flat-square&logo=github)](https://github.com/rabbits0209/Fanqie-Tomato-Downloader/issues)
-[![GitHub license](https://img.shields.io/github/license/rabbits0209/Fanqie-Tomato-Downloader?style=flat-square)](LICENSE)
-[![GitHub last commit](https://img.shields.io/github/last-commit/rabbits0209/Fanqie-Tomato-Downloader?style=flat-square)](https://github.com/rabbits0209/Fanqie-Tomato-Downloader/commits/main)
+[![GitHub stars](https://img.shields.io/github/stars/rabbits0209/Fanqie-novel-Downloader?style=flat-square&logo=github)](https://github.com/rabbits0209/Fanqie-novel-Downloader/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/rabbits0209/Fanqie-novel-Downloader?style=flat-square&logo=github)](https://github.com/rabbits0209/Fanqie-novel-Downloader/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/rabbits0209/Fanqie-novel-Downloader?style=flat-square&logo=github)](https://github.com/rabbits0209/Fanqie-novel-Downloader/issues)
+[![GitHub license](https://img.shields.io/github/license/rabbits0209/Fanqie-novel-Downloader?style=flat-square)](LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/rabbits0209/Fanqie-novel-Downloader?style=flat-square)](https://github.com/rabbits0209/Fanqie-novel-Downloader/commits/main)
 
-[![Windows Support](https://img.shields.io/badge/Windows-0078D6?style=flat-square&logo=windows&logoColor=white)](https://github.com/rabbits0209/Fanqie-Tomato-Downloader/releases)
-[![MacOS Support](https://img.shields.io/badge/MacOS-000000?style=flat-square&logo=apple&logoColor=white)](https://github.com/rabbits0209/Fanqie-Tomato-Downloader/releases)
-[![Linux Support](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)](https://github.com/rabbits0209/Fanqie-Tomato-Downloader/releases)
+[![Windows Support](https://img.shields.io/badge/Windows-0078D6?style=flat-square&logo=windows&logoColor=white)](https://github.com/rabbits0209/Fanqie-novel-Downloader/releases)
+[![MacOS Support](https://img.shields.io/badge/MacOS-000000?style=flat-square&logo=apple&logoColor=white)](https://github.com/rabbits0209/Fanqie-novel-Downloader/releases)
+[![Linux Support](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)](https://github.com/rabbits0209/Fanqie-novel-Downloader/releases)
 
 **🌟 高效、优雅且功能强大的番茄小说下载解决方案 🌟**
 
@@ -56,13 +56,13 @@
 <details>
 <summary><b>点击查看各平台预编译版本</b></summary>
 
-从 [📥 官方发布页](https://github.com/rabbits0209/Fanqie-Tomato-Downloader/releases) 下载适合您系统的预编译版本：
+从 [📥 官方发布页](https://github.com/rabbits0209/Fanqie-novel-Downloader/releases) 下载适合您系统的预编译版本：
 
 | 平台 | 下载链接 | 说明 |
 |------|---------|------|
-| Windows | [`Fanqie-Novel-Downloader-Windows.zip`](https://github.com/rabbits0209/Fanqie-Tomato-Downloader/releases) | 解压后双击运行 `番茄小说下载器.exe` |
-| MacOS | [`Fanqie-Novel-Downloader-MacOS.zip`](https://github.com/rabbits0209/Fanqie-Tomato-Downloader/releases) | 解压后运行 `番茄小说下载器` 应用 |
-| Linux | [`Fanqie-Novel-Downloader-Linux.zip`](https://github.com/rabbits0209/Fanqie-Tomato-Downloader/releases) | 解压后运行 `番茄小说下载器` 可执行文件 |
+| Windows | [`Fanqie-Novel-Downloader-Windows.zip`](https://github.com/rabbits0209/Fanqie-novel-Downloader/releases) | 解压后双击运行 `番茄小说下载器.exe` |
+| MacOS | [`Fanqie-Novel-Downloader-MacOS.zip`](https://github.com/rabbits0209/Fanqie-novel-Downloader/releases) | 解压后运行 `番茄小说下载器` 应用 |
+| Linux | [`Fanqie-Novel-Downloader-Linux.zip`](https://github.com/rabbits0209/Fanqie-novel-Downloader/releases) | 解压后运行 `番茄小说下载器` 可执行文件 |
 
 </details>
 
@@ -73,8 +73,8 @@
 
 ```bash
 # 1. 克隆代码仓库
-git clone https://github.com/rabbits0209/Fanqie-Tomato-Downloader.git
-cd Fanqie-Tomato-Downloader
+git clone https://github.com/rabbits0209/Fanqie-novel-Downloader.git
+cd Fanqie-novel-Downloader
 
 # 2. 安装依赖库
 pip install -r requirements.txt
@@ -235,6 +235,6 @@ graph LR
 
 **⭐ 感谢您的使用，欢迎 Star 项目以支持维护和更新！⭐** 
 
-[GitHub 仓库](https://github.com/rabbits0209/Fanqie-Tomato-Downloader) | [问题反馈](https://github.com/rabbits0209/Fanqie-Tomato-Downloader/issues)
+[GitHub 仓库](https://github.com/rabbits0209/Fanqie-novel-Downloader) | [问题反馈](https://github.com/rabbits0209/Fanqie-novel-Downloader/issues)
 
 </p>
