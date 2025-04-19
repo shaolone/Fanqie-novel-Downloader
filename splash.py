@@ -93,7 +93,7 @@ class SplashScreen(ctk.CTkToplevel):
         name_label.grid(row=1, column=0, padx=20, pady=(10, 5))
         
         # 版本号和版权信息
-        version_label = ctk.CTkLabel(self, text="专业版 v1.0.0", font=("黑体", 12))
+        version_label = ctk.CTkLabel(self, text="专业版 v1.1.0", font=("黑体", 12))
         version_label.grid(row=2, column=0, padx=20, pady=(0, 20))
 
     def center_window(self):
