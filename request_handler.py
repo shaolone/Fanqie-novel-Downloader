@@ -59,7 +59,8 @@ class RequestHandler:
                 )
                 if resp.ok:
                     # 确保目录存在
-                    os.makedirs(os.path.dirname(cookie_path), exist_ok=True)
+                    dir_path = os.path.dirname(cookie_path) or os.getcwd()
+                    os.makedirs(dir_path, exist_ok=True)
                     with open(cookie_path, 'w', encoding='utf-8') as f:
                         json.dump(cookie, f, ensure_ascii=False, indent=4)
                     return cookie
