@@ -80,6 +80,14 @@ class NovelDownloaderGUI(ctk.CTk):
         main_frame = ctk.CTkFrame(self)
         main_frame.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
         main_frame.grid_columnconfigure(1, weight=1)
+
+        self.epub_var = ctk.BooleanVar(value=False)
+        epub_check = ctk.CTkCheckBox(
+            main_frame,
+            text="生成EPUB电子书",
+            variable=self.epub_var
+        )
+        epub_check.grid(row=2, column=0, columnspan=4, padx=5, pady=5, sticky="w")
         
         # 小说ID输入区域
         id_label = ctk.CTkLabel(main_frame, text="小说ID:", anchor="w")
@@ -321,11 +329,11 @@ class NovelDownloaderGUI(ctk.CTk):
                     processed_contents.add(content_hash)
                     f.write(f"\n{chapter['title']}\n\n")
                     f.write(content + "\n\n")
-            
+                            
             self.update_progress(100, "下载完成！")
             self.log(f"\n下载完成！成功：{success_count}章，失败：{total_chapters - success_count}章")
             self.log(f"文件保存在：{output_file}")
-            
+
             # 添加到书库
             book_info = {
                 "name": name,
@@ -337,7 +345,30 @@ class NovelDownloaderGUI(ctk.CTk):
             self.log("已添加到书库")
             
             messagebox.showinfo("完成", f"小说《{name}》下载完成！\n保存路径：{output_file}")
-            
+
+            if self.epub_var.get() and success_count > 0:
+                try:
+                    self.log("正在生成EPUB电子书...")  # 只在此处输出一次
+                    from epub_generator import EpubGenerator
+                    
+                    epub_gen = EpubGenerator(
+                        book_info={
+                            'id': book_id,
+                            'name': name,
+                            'author': author_name,
+                            'description': description
+                        },
+                        chapters=list(self.content_cache.values())
+                    )
+                    epub_gen.save(save_path)
+                    self.log("EPUB生成完成")
+                except Exception as e:
+                    self.log(f"EPUB生成失败: {str(e)}")
+
+        except Exception as e:
+            self.log(f"\n错误：{str(e)}")
+            self.update_progress(0, f"下载失败: {str(e)}")
+            messagebox.showerror("错误", f"下载失败: {str(e)}")
         except Exception as e:
             self.log(f"\n错误：{str(e)}")
             self.update_progress(0, f"下载失败: {str(e)}")
