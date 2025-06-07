@@ -106,5 +106,8 @@ output:
   [💬 讨论区](https://github.com/rabbits0209/Fanqie-novel-Downloader/discussions)
   
   <sub>© 2025 Fanqie Novel Downloader Project. MIT Licensed.</sub>
-  <sub>DartNode Logo</sub>
+  ***
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
+
+[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
 </div>
