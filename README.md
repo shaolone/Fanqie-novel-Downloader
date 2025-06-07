@@ -105,5 +105,6 @@ output:
   [🐛 提交问题](https://github.com/rabbits0209/Fanqie-novel-Downloader/issues) |
   [💬 讨论区](https://github.com/rabbits0209/Fanqie-novel-Downloader/discussions)
   
-  <sub>© 2025 Fanqie Novel Downloader Project. MIT Licensed.\DartNode Logo</sub>
+  <sub>© 2025 Fanqie Novel Downloader Project. MIT Licensed.</sub>
+  <sub>DartNode Logo</sub>
 </div>
