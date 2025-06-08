@@ -149,7 +149,7 @@ class RequestHandler:
         
         while retry_count < max_retries:
             try:
-                api_url = f"https://fanqie.tutuxka.top/?item_ids={chapter_id}"
+                api_url = f"http://read.tutuxka.top/?item_id={chapter_id}"
                 response = self.session.get(api_url, timeout=self.config["request_timeout"])
                 data = response.json()
                 
