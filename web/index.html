@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>番茄小说下载器 - 功能强大的在线下载工具</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-book-open"></i>
+                <span>番茄小说下载器</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active" data-tab="home">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </a>
+                <a href="#download" class="nav-link" data-tab="download">
+                    <i class="fas fa-download"></i>
+                    <span>下载</span>
+                </a>
+                <a href="#library" class="nav-link" data-tab="library">
+                    <i class="fas fa-library"></i>
+                    <span>书库</span>
+                </a>
+                <a href="#history" class="nav-link" data-tab="history">
+                    <i class="fas fa-history"></i>
+                    <span>历史</span>
+                </a>
+                <a href="#settings" class="nav-link" data-tab="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>设置</span>
+                </a>
+            </div>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+        <!-- 首页 -->
+        <section id="home" class="tab-content active">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="gradient-text">番茄小说下载器</span>
+                    </h1>
+                    <p class="hero-subtitle">功能强大、界面美观的在线小说下载工具</p>
+                    <div class="hero-features">
+                        <div class="feature-item">
+                            <i class="fas fa-rocket"></i>
+                            <span>高速下载</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>安全可靠</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>响应式设计</span>
+                        </div>
+                    </div>
+                    <button class="cta-button" onclick="switchTab('download')">
+                        <i class="fas fa-download"></i>
+                        开始下载
+                    </button>
+                </div>
+                <div class="hero-image">
+                    <div class="floating-card">
+                        <i class="fas fa-book"></i>
+                        <h3>智能下载</h3>
+                        <p>自动识别章节，批量下载</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 统计信息 -->
+            <div class="stats-section">
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-downloads">0</h3>
+                            <p>总下载量</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-books">0</h3>
+                            <p>书库数量</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="active-tasks">0</h3>
+                            <p>活跃任务</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="success-rate">100%</h3>
+                            <p>成功率</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 下载页面 -->
+        <section id="download" class="tab-content">
+            <div class="download-section">
+                <div class="download-header">
+                    <h2>下载小说</h2>
+                    <p>输入番茄小说ID开始下载</p>
+                </div>
+
+                <!-- 下载表单 -->
+                <div class="download-form">
+                    <div class="input-group">
+                        <label for="book-id">小说ID</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="book-id" placeholder="请输入小说ID，例如：7143038691944959011">
+                            <button type="button" id="check-btn" class="check-btn">
+                                <i class="fas fa-search"></i>
+                                检查
+                            </button>
+                        </div>
+                        <div class="input-help">
+                            <i class="fas fa-info-circle"></i>
+                            从番茄小说URL中获取ID：https://fanqienovel.com/page/<strong>7143038691944959011</strong>
+                        </div>
+                    </div>
+
+                    <!-- 小说信息预览 -->
+                    <div id="book-preview" class="book-preview" style="display: none;">
+                        <div class="book-info">
+                            <div class="book-cover">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="book-details">
+                                <h3 id="book-title">小说标题</h3>
+                                <p id="book-author">作者</p>
+                                <div class="book-meta">
+                                    <span id="book-chapters">0 章节</span>
+                                    <span id="book-status">未下载</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="download-options">
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="force-download">
+                                <span class="checkmark"></span>
+                                强制重新下载
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="button" id="download-btn" class="download-btn" disabled>
+                        <i class="fas fa-download"></i>
+                        开始下载
+                    </button>
+                </div>
+
+                <!-- 下载进度 -->
+                <div id="download-progress" class="download-progress" style="display: none;">
+                    <div class="progress-header">
+                        <h3 id="progress-title">正在下载...</h3>
+                        <div class="progress-controls">
+                            <button id="pause-btn" class="control-btn">
+                                <i class="fas fa-pause"></i>
+                                暂停
+                            </button>
+                            <button id="cancel-btn" class="control-btn cancel">
+                                <i class="fas fa-times"></i>
+                                取消
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bar-container">
+                        <div class="progress-bar">
+                            <div id="progress-fill" class="progress-fill"></div>
+                        </div>
+                        <span id="progress-text">0%</span>
+                    </div>
+                    
+                    <div class="progress-details">
+                        <div class="detail-item">
+                            <span>状态：</span>
+                            <span id="download-status">准备中</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>进度：</span>
+                            <span id="chapter-progress">0 / 0</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>开始时间：</span>
+                            <span id="start-time">--</span>
+                        </div>
+                        <!-- 调试信息区域 -->
+                        <div id="debug-info" class="debug-info" style="display: none;">
+                            <div class="detail-item">
+                                <span>任务ID：</span>
+                                <span id="debug-task-id">--</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>API地址：</span>
+                                <span id="debug-api-url">--</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>下载设置：</span>
+                                <span id="debug-settings">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 下载完成 -->
+                <div id="download-complete" class="download-complete" style="display: none;">
+                    <div class="complete-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>下载完成！</h3>
+                    <p id="complete-message">小说已成功下载</p>
+                    <div class="complete-actions">
+                        <button id="download-file-btn" class="action-btn primary">
+                            <i class="fas fa-download"></i>
+                            下载文件
+                        </button>
+                        <button id="new-download-btn" class="action-btn">
+                            <i class="fas fa-plus"></i>
+                            新建下载
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 书库页面 -->
+        <section id="library" class="tab-content">
+            <div class="library-section">
+                <div class="library-header">
+                    <h2>我的书库</h2>
+                    <div class="library-controls">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="library-search" placeholder="搜索书籍...">
+                        </div>
+                        <button id="refresh-library" class="refresh-btn">
+                            <i class="fas fa-sync-alt"></i>
+                            刷新
+                        </button>
+                    </div>
+                </div>
+
+                <div class="library-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-book"></i>
+                        <div>
+                            <h3 id="library-count">0</h3>
+                            <p>本书籍</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-hdd"></i>
+                        <div>
+                            <h3 id="library-size">0 MB</h3>
+                            <p>总大小</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="library-grid" class="library-grid">
+                    <!-- 书籍卡片将通过JavaScript动态生成 -->
+                </div>
+
+                <div id="library-empty" class="empty-state" style="display: none;">
+                    <i class="fas fa-book-open"></i>
+                    <h3>书库为空</h3>
+                    <p>还没有下载任何小说，去下载一些吧！</p>
+                    <button onclick="switchTab('download')" class="cta-button">
+                        <i class="fas fa-download"></i>
+                        开始下载
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 历史页面 -->
+        <section id="history" class="tab-content">
+            <div class="history-section">
+                <div class="history-header">
+                    <h2>下载历史</h2>
+                    <button id="clear-history" class="clear-btn">
+                        <i class="fas fa-trash"></i>
+                        清空历史
+                    </button>
+                </div>
+
+                <div id="history-list" class="history-list">
+                    <!-- 历史记录将通过JavaScript动态生成 -->
+                </div>
+
+                <div id="history-empty" class="empty-state" style="display: none;">
+                    <i class="fas fa-history"></i>
+                    <h3>暂无历史记录</h3>
+                    <p>开始下载小说后，这里会显示下载历史</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 设置页面 -->
+        <section id="settings" class="tab-content">
+            <div class="settings-section">
+                <div class="settings-header">
+                    <h2>设置</h2>
+                    <p>自定义您的下载体验</p>
+                </div>
+
+                <div class="settings-groups">
+                    <div class="setting-group">
+                        <h3>下载设置</h3>
+                        <div class="setting-item">
+                            <label for="batch-size">批量大小</label>
+                            <input type="number" id="batch-size" value="300" min="50" max="500">
+                            <span class="setting-help">每批下载的章节数量</span>
+                        </div>
+                        <div class="setting-item">
+                            <label for="retry-count">重试次数</label>
+                            <input type="number" id="retry-count" value="3" min="1" max="10">
+                            <span class="setting-help">下载失败时的重试次数</span>
+                        </div>
+                        <div class="setting-item">
+                            <label for="download-delay">下载间隔</label>
+                            <input type="number" id="download-delay" value="3" min="1" max="10">
+                            <span class="setting-help">批次间的等待时间（秒）</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>界面设置</h3>
+                        <div class="setting-item">
+                            <label for="theme-select">主题</label>
+                            <select id="theme-select">
+                                <option value="light">浅色主题</option>
+                                <option value="dark">深色主题</option>
+                                <option value="auto">跟随系统</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label class="switch-wrapper">
+                                <input type="checkbox" id="auto-refresh">
+                                <span class="switch"></span>
+                                自动刷新
+                            </label>
+                            <span class="setting-help">自动刷新下载进度和书库</span>
+                        </div>
+                        <div class="setting-item">
+                            <label class="switch-wrapper">
+                                <input type="checkbox" id="sound-notifications">
+                                <span class="switch"></span>
+                                声音通知
+                            </label>
+                            <span class="setting-help">下载完成时播放提示音</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>高级设置</h3>
+                        <div class="setting-item">
+                            <label for="api-endpoint">API地址</label>
+                            <input type="text" id="api-endpoint" value="http://localhost:5000">
+                            <span class="setting-help">后端API服务器地址</span>
+                        </div>
+                        <div class="setting-item">
+                            <label class="switch-wrapper">
+                                <input type="checkbox" id="debug-mode">
+                                <span class="switch"></span>
+                                调试模式
+                            </label>
+                            <span class="setting-help">显示详细的调试信息</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-actions">
+                    <button id="save-settings" class="save-btn">
+                        <i class="fas fa-save"></i>
+                        保存设置
+                    </button>
+                    <button id="reset-settings" class="reset-btn">
+                        <i class="fas fa-undo"></i>
+                        重置默认
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 通知系统 -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- 模态框 -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">标题</h3>
+                <button id="modal-close" class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">内容</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-cancel" class="modal-btn cancel">取消</button>
+                <button id="modal-confirm" class="modal-btn confirm">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载指示器 -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>加载中...</p>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
+
