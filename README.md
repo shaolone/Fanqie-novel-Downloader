@@ -1,4 +1,4 @@
-# 📚 番茄小说下载器 | Fanqie Novel Downloader
+# 📚 番茄小说下载器 | Fanqie Novel Downloader QQ群：1050781298
 
 <div align="center">
 
